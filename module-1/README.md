@@ -12,12 +12,6 @@ This folder contains an interactive HTML presentation covering Module 1 of the *
 ### Features
 
 - ✨ **12 comprehensive slides** covering container fundamentals
-- 🔗 **50+ curated web links** to official documentation and resources
-- 🎨 **Professional design** with white background and blue highlights
-- ⌨️ **Keyboard navigation** (Arrow keys, Spacebar)
-- 🖱️ **Mouse/touch navigation** with Previous/Next buttons
-- 📱 **Responsive design** for various screen sizes
-- 🏷️ **Slide numbers** for easy reference
 
 ### How to Use
 
