@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4: Azure Container Deployment Options - Progress Software Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            background: white;
+            padding: 60px 80px 100px 80px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #0066cc;
+            font-size: 3em;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #0066cc;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #0066cc;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            margin-top: 20px;
+        }
+
+        h3 {
+            color: #0088ff;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            margin-top: 15px;
+        }
+
+        h4 {
+            color: #0066cc;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            background: #e6f2ff;
+            padding: 20px;
+            border-left: 5px solid #0066cc;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .links {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: auto;
+            border: 2px solid #0066cc;
+        }
+
+        .links h4 {
+            color: #0066cc;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .links a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 1em;
+            display: block;
+            margin: 8px 0;
+            padding: 5px 10px;
+            background: white;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            background: #0066cc;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #0088ff;
+            transform: scale(1.05);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: #0066cc;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+        }
+
+        .comparison-table th {
+            background: #0066cc;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 0.95em;
+        }
+
+        .comparison-table td {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            font-size: 0.95em;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f0f8ff;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #0066cc;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container" id="slideContainer">
+        
+        <!-- Slide 1: Title Slide -->
+        <div class="slide">
+            <div class="slide-number">1 / 20</div>
+            <div class="content-area">
+                <h1>Module 4: Azure Container Deployment Options</h1>
+                <h2>Deploying .NET Containers to Azure</h2>
+                <div class="highlight">
+                    <h3>Learning Objectives</h3>
+                    <ul>
+                        <li>Compare Azure container hosting services</li>
+                        <li>Deploy .NET containers to Azure Container Apps</li>
+                        <li>Deploy .NET containers to Azure App Service</li>
+                        <li>Deploy .NET containers to Azure Kubernetes Service (AKS)</li>
+                        <li>Implement CI/CD for container deployments</li>
+                        <li>Monitor and troubleshoot containerized applications</li>
+                    </ul>
+                </div>
+                <p style="font-size: 1.5em; margin-top: 30px; color: #0066cc;"><strong>Progress Software Development Teams</strong></p>
+            </div>
+            <div class="links">
+                <h4>📚 Module Resources</h4>
+                <a href="https://azure.microsoft.com/en-us/products/category/containers/" target="_blank">🏢 Azure Container Services</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-instances/" target="_blank">📖 Azure Container Instances</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-apps/" target="_blank">🚀 Azure Container Apps</a>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/" target="_blank">☸️ Azure Kubernetes Service</a>
+            </div>
+        </div>
+
+        <!-- Slide 2: Container Services Overview -->
+        <div class="slide">
+            <div class="slide-number">2 / 20</div>
+            <div class="content-area">
+                <h2>4.1 Azure Container Services Overview</h2>
+                <h3>Choosing the Right Service</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Service</th>
+                        <th>Use Case</th>
+                        <th>Orchestration</th>
+                        <th>Complexity</th>
+                        <th>Scaling</th>
+                    </tr>
+                    <tr>
+                        <td><strong>ACI</strong></td>
+                        <td>Quick tests, batch jobs</td>
+                        <td>None</td>
+                        <td>Low</td>
+                        <td>Manual</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Container Apps</strong></td>
+                        <td>Microservices, serverless</td>
+                        <td>Managed K8s (KEDA)</td>
+                        <td>Low-Medium</td>
+                        <td>Auto (HTTP, Queue)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>App Service</strong></td>
+                        <td>Web apps, APIs</td>
+                        <td>App Service</td>
+                        <td>Low</td>
+                        <td>Auto (rules)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AKS</strong></td>
+                        <td>Enterprise, full control</td>
+                        <td>Kubernetes</td>
+                        <td>High</td>
+                        <td>Auto (HPA, CA)</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="links">
+                <h4>🔗 Decision Guides</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/architecture/guide/technology-choices/compute-decision-tree" target="_blank">Azure Compute Decision Tree</a>
+                <a href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank">Azure Pricing Calculator</a>
+                <a href="4.1-container-services-overview.md">📝 Lab 4.1: Services Overview</a>
+            </div>
+        </div>
+
+        <!-- Slide 3: Decision Matrix -->
+        <div class="slide">
+            <div class="slide-number">3 / 20</div>
+            <div class="content-area">
+                <h2>When to Use Which Service?</h2>
+                <div class="highlight">
+                    <h4>🚀 Choose Azure Container Instances (ACI):</h4>
+                    <ul>
+                        <li>Quick tests and development scenarios</li>
+                        <li>Batch jobs and scheduled tasks</li>
+                        <li>Burst scenarios with short-lived containers</li>
+                        <li>CI/CD build agents</li>
+                        <li>Simple containers without orchestration needs</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>⚡ Choose Azure Container Apps (ACA):</h4>
+                    <ul>
+                        <li>Modern microservices architectures</li>
+                        <li>Event-driven applications with KEDA</li>
+                        <li>Serverless containers with auto-scaling</li>
+                        <li>Dapr-enabled applications</li>
+                        <li>Applications requiring blue-green deployments</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Architecture Guidance</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/architecture/guide/technology-choices/container-service" target="_blank">Container Service Comparison</a>
+                <a href="https://learn.microsoft.com/en-us/azure/well-architected/" target="_blank">Azure Well-Architected Framework</a>
+            </div>
+        </div>
+
+        <!-- Slide 4: More Decision Criteria -->
+        <div class="slide">
+            <div class="slide-number">4 / 20</div>
+            <div class="content-area">
+                <h2>More Decision Criteria</h2>
+                <div class="highlight">
+                    <h4>🌐 Choose Azure App Service (Containers):</h4>
+                    <ul>
+                        <li>Traditional web applications and REST APIs</li>
+                        <li>Teams already familiar with App Service</li>
+                        <li>Need deployment slots for staging</li>
+                        <li>Built-in authentication and authorization</li>
+                        <li>Custom domains and SSL certificates</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>☸️ Choose Azure Kubernetes Service (AKS):</h4>
+                    <ul>
+                        <li>Complex enterprise workloads</li>
+                        <li>Need full Kubernetes features and ecosystem</li>
+                        <li>Multi-cloud or hybrid cloud strategy</li>
+                        <li>Advanced networking and security requirements</li>
+                        <li>Existing Kubernetes expertise in team</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Service Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/app-service/configure-custom-container" target="_blank">App Service Containers</a>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/intro-kubernetes" target="_blank">AKS Overview</a>
+            </div>
+        </div>
+
+        <!-- Slide 5: Azure Container Instances -->
+        <div class="slide">
+            <div class="slide-number">5 / 20</div>
+            <div class="content-area">
+                <h2>4.2 Azure Container Instances (ACI)</h2>
+                <h3>Fastest Way to Run Containers</h3>
+                <div class="highlight">
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li><strong>Per-second billing:</strong> Pay only for what you use</li>
+                        <li><strong>Fast startup:</strong> Containers start in seconds</li>
+                        <li><strong>Hypervisor isolation:</strong> Secure container groups</li>
+                        <li><strong>Custom sizes:</strong> Flexible CPU and memory allocation</li>
+                        <li><strong>Persistent storage:</strong> Azure Files volume mounting</li>
+                        <li><strong>Public IP and DNS:</strong> Direct internet access</li>
+                    </ul>
+                </div>
+                <h4>Deploy Container:</h4>
+                <pre><code>az container create \
+  --resource-group rg-containers \
+  --name myapi-aci \
+  --image myregistry.azurecr.io/mywebapi:1.0 \
+  --dns-name-label myapi-unique \
+  --ports 8080</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 ACI Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-instances/" target="_blank">ACI Documentation</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-quickstart" target="_blank">ACI Quickstart</a>
+                <a href="4.2-azure-container-instances.md">📝 Lab 4.2: Deploy to ACI</a>
+            </div>
+        </div>
+
+        <!-- Slide 6: ACI Multi-Container -->
+        <div class="slide">
+            <div class="slide-number">6 / 20</div>
+            <div class="content-area">
+                <h2>ACI Multi-Container Groups</h2>
+                <h3>Sidecar Pattern</h3>
+                <p>Deploy multiple containers that share resources (network, storage, lifecycle)</p>
+                <h4>Common Use Cases:</h4>
+                <ul>
+                    <li><strong>Logging sidecar:</strong> Log aggregation and forwarding</li>
+                    <li><strong>Monitoring agent:</strong> Metrics collection</li>
+                    <li><strong>SSL proxy:</strong> TLS termination</li>
+                    <li><strong>Ambassador:</strong> Proxy connections to backend services</li>
+                </ul>
+                <h4>Deploy Multi-Container Group:</h4>
+                <pre><code># Create YAML definition with multiple containers
+az container create \
+  --resource-group rg-containers \
+  --file aci-multi.yaml</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Multi-Container Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-multi-container-group" target="_blank">Multi-Container Groups</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-volume-azure-files" target="_blank">Volume Mounts</a>
+            </div>
+        </div>
+
+        <!-- Slide 7: Azure Container Apps -->
+        <div class="slide">
+            <div class="slide-number">7 / 20</div>
+            <div class="content-area">
+                <h2>4.3 Azure Container Apps (ACA)</h2>
+                <h3>Serverless Containers for Microservices</h3>
+                <div class="highlight">
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li><strong>Managed Kubernetes:</strong> Built on KEDA and Envoy</li>
+                        <li><strong>Auto-scaling:</strong> HTTP, queue, CPU, custom metrics</li>
+                        <li><strong>Revisions:</strong> Versioning and traffic splitting</li>
+                        <li><strong>Dapr integration:</strong> Built-in service-to-service calls</li>
+                        <li><strong>Scale to zero:</strong> Pay only when running</li>
+                        <li><strong>Built-in ingress:</strong> HTTPS with managed certificates</li>
+                    </ul>
+                </div>
+                <h4>Create Environment:</h4>
+                <pre><code>az containerapp env create \
+  --name myenv \
+  --resource-group rg-containers \
+  --location eastus</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Container Apps Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-apps/" target="_blank">Container Apps Docs</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-apps/compare-options" target="_blank">ACA vs AKS Comparison</a>
+                <a href="4.3-azure-container-apps.md">📝 Lab 4.3: Deploy to ACA</a>
+            </div>
+        </div>
+
+        <!-- Slide 8: Container Apps Deployment -->
+        <div class="slide">
+            <div class="slide-number">8 / 20</div>
+            <div class="content-area">
+                <h2>Deploying to Container Apps</h2>
+                <h3>Create and Configure App</h3>
+                <h4>Deploy Container App:</h4>
+                <pre><code>az containerapp create \
+  --name mywebapi \
+  --resource-group rg-containers \
+  --environment myenv \
+  --image myregistry.azurecr.io/mywebapi:1.0 \
+  --target-port 8080 \
+  --ingress external \
+  --min-replicas 1 \
+  --max-replicas 10</code></pre>
+                <h4>Configure Autoscaling:</h4>
+                <pre><code>az containerapp update \
+  --name mywebapi \
+  --resource-group rg-containers \
+  --scale-rule-name http-rule \
+  --scale-rule-type http \
+  --scale-rule-http-concurrency 50</code></pre>
+                <h4>Get App URL:</h4>
+                <pre><code>az containerapp show \
+  --name mywebapi \
+  --resource-group rg-containers \
+  --query properties.configuration.ingress.fqdn -o tsv</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Deployment Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-apps/quickstart-portal" target="_blank">ACA Quickstart</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-apps/scale-app" target="_blank">Scaling in Container Apps</a>
+            </div>
+        </div>
+
+        <!-- Slide 9: Traffic Splitting -->
+        <div class="slide">
+            <div class="slide-number">9 / 20</div>
+            <div class="content-area">
+                <h2>Blue-Green Deployments</h2>
+                <h3>Traffic Splitting Between Revisions</h3>
+                <div class="highlight">
+                    <h4>Revision Management:</h4>
+                    <ul>
+                        <li>Each deployment creates a new revision</li>
+                        <li>Revisions are immutable and versioned</li>
+                        <li>Split traffic across multiple revisions</li>
+                        <li>Instant rollback to previous revision</li>
+                        <li>A/B testing with traffic weights</li>
+                    </ul>
+                </div>
+                <h4>Split Traffic:</h4>
+                <pre><code># Route 80% to v1, 20% to v2
+az containerapp ingress traffic set \
+  --name mywebapi \
+  --resource-group rg-containers \
+  --revision-weight mywebapi--v1=80 mywebapi--v2=20
+
+# Shift all traffic to v2
+az containerapp ingress traffic set \
+  --name mywebapi \
+  --resource-group rg-containers \
+  --revision-weight mywebapi--v2=100</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Revision Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-apps/revisions" target="_blank">Revisions in Container Apps</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-apps/blue-green-deployment" target="_blank">Blue-Green Deployment</a>
+            </div>
+        </div>
+
+        <!-- Slide 10: App Service with Containers -->
+        <div class="slide">
+            <div class="slide-number">10 / 20</div>
+            <div class="content-area">
+                <h2>4.4 Azure App Service with Containers</h2>
+                <h3>PaaS for Web Applications</h3>
+                <div class="highlight">
+                    <h4>Why App Service?</h4>
+                    <ul>
+                        <li><strong>Familiar platform:</strong> Same App Service features</li>
+                        <li><strong>Deployment slots:</strong> Staging environments</li>
+                        <li><strong>Easy Auth:</strong> Built-in authentication</li>
+                        <li><strong>Custom domains:</strong> SSL certificates included</li>
+                        <li><strong>Continuous deployment:</strong> GitHub, ACR webhooks</li>
+                        <li><strong>Monitoring:</strong> Application Insights integration</li>
+                    </ul>
+                </div>
+                <h4>Create App Service:</h4>
+                <pre><code># Create Linux App Service Plan
+az appservice plan create \
+  --name myappplan \
+  --resource-group rg-containers \
+  --is-linux \
+  --sku P1V2</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 App Service Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/app-service/configure-custom-container" target="_blank">Custom Containers</a>
+                <a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-container-github-action" target="_blank">Deploy from ACR</a>
+                <a href="4.4-app-service-containers.md">📝 Lab 4.4: Deploy to App Service</a>
+            </div>
+        </div>
+
+        <!-- Slide 11: App Service Deployment -->
+        <div class="slide">
+            <div class="slide-number">11 / 20</div>
+            <div class="content-area">
+                <h2>Deploy Container to App Service</h2>
+                <h3>ACR Integration</h3>
+                <h4>Create Web App:</h4>
+                <pre><code>az webapp create \
+  --resource-group rg-containers \
+  --plan myappplan \
+  --name mywebapi-app \
+  --deployment-container-image-name myregistry.azurecr.io/mywebapi:1.0</code></pre>
+                <h4>Configure ACR Credentials:</h4>
+                <pre><code>az webapp config container set \
+  --name mywebapi-app \
+  --resource-group rg-containers \
+  --docker-registry-server-url https://myregistry.azurecr.io \
+  --docker-registry-server-user <username> \
+  --docker-registry-server-password <password></code></pre>
+                <h4>Enable Continuous Deployment:</h4>
+                <pre><code>az webapp deployment container config \
+  --name mywebapi-app \
+  --resource-group rg-containers \
+  --enable-cd true</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Deployment Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-ci-cd-custom-container" target="_blank">CI/CD for Containers</a>
+                <a href="https://learn.microsoft.com/en-us/azure/app-service/configure-common" target="_blank">App Configuration</a>
+            </div>
+        </div>
+
+        <!-- Slide 12: Azure Kubernetes Service -->
+        <div class="slide">
+            <div class="slide-number">12 / 20</div>
+            <div class="content-area">
+                <h2>4.5 Azure Kubernetes Service (AKS)</h2>
+                <h3>Enterprise-Grade Container Orchestration</h3>
+                <div class="highlight">
+                    <h4>Why AKS?</h4>
+                    <ul>
+                        <li><strong>Full Kubernetes:</strong> Complete K8s API and ecosystem</li>
+                        <li><strong>Managed control plane:</strong> Microsoft manages masters</li>
+                        <li><strong>ACR integration:</strong> Seamless image pulling</li>
+                        <li><strong>Auto-scaling:</strong> HPA and cluster autoscaler</li>
+                        <li><strong>Advanced networking:</strong> Azure CNI, Calico policies</li>
+                        <li><strong>Security:</strong> Azure AD, RBAC, Key Vault integration</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <p><strong>Prerequisites:</strong> Basic Kubernetes knowledge (pods, services, deployments)</p>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 AKS Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/" target="_blank">AKS Documentation</a>
+                <a href="https://kubernetes.io/docs/home/" target="_blank">Kubernetes Docs</a>
+                <a href="4.5-azure-kubernetes-service.md">📝 Lab 4.5: Deploy to AKS</a>
+            </div>
+        </div>
+
+        <!-- Slide 13: Provisioning AKS -->
+        <div class="slide">
+            <div class="slide-number">13 / 20</div>
+            <div class="content-area">
+                <h2>Provisioning AKS Cluster</h2>
+                <h3>Create with ACR Integration</h3>
+                <h4>Create AKS Cluster:</h4>
+                <pre><code>az aks create \
+  --resource-group rg-containers \
+  --name myakscluster \
+  --node-count 3 \
+  --node-vm-size Standard_D2s_v3 \
+  --enable-managed-identity \
+  --attach-acr myregistry \
+  --network-plugin azure \
+  --enable-addons monitoring \
+  --generate-ssh-keys</code></pre>
+                <h4>Get Credentials:</h4>
+                <pre><code>az aks get-credentials \
+  --resource-group rg-containers \
+  --name myakscluster
+
+kubectl get nodes</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Provisioning Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli" target="_blank">AKS Quickstart</a>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/cluster-configuration" target="_blank">Cluster Configuration</a>
+            </div>
+        </div>
+
+        <!-- Slide 14: Deploy to AKS -->
+        <div class="slide">
+            <div class="slide-number">14 / 20</div>
+            <div class="content-area">
+                <h2>Deploy Application to AKS</h2>
+                <h3>Kubernetes Manifests</h3>
+                <h4>Deployment Manifest:</h4>
+                <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mywebapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mywebapi
+  template:
+    metadata:
+      labels:
+        app: mywebapi
+    spec:
+      containers:
+      - name: mywebapi
+        image: myregistry.azurecr.io/mywebapi:1.0
+        ports:
+        - containerPort: 8080</code></pre>
+                <h4>Apply Deployment:</h4>
+                <pre><code>kubectl apply -f deployment.yaml
+kubectl get pods -l app=mywebapi</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Deployment Resources</h4>
+                <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank">Kubernetes Deployments</a>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-application" target="_blank">Deploy App to AKS</a>
+            </div>
+        </div>
+
+        <!-- Slide 15: AKS Services and Ingress -->
+        <div class="slide">
+            <div class="slide-number">15 / 20</div>
+            <div class="content-area">
+                <h2>Services and Ingress</h2>
+                <h3>Expose Applications</h3>
+                <h4>Create Service (LoadBalancer):</h4>
+                <pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: mywebapi-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: mywebapi
+  ports:
+  - port: 80
+    targetPort: 8080</code></pre>
+                <h4>Install NGINX Ingress:</h4>
+                <pre><code>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx \
+  --create-namespace</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Networking Resources</h4>
+                <a href="https://kubernetes.io/docs/concepts/services-networking/service/" target="_blank">Kubernetes Services</a>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/ingress-basic" target="_blank">Ingress in AKS</a>
+            </div>
+        </div>
+
+        <!-- Slide 16: AKS Autoscaling -->
+        <div class="slide">
+            <div class="slide-number">16 / 20</div>
+            <div class="content-area">
+                <h2>AKS Autoscaling</h2>
+                <h3>Horizontal Pod Autoscaler</h3>
+                <h4>Create HPA:</h4>
+                <pre><code>kubectl autoscale deployment mywebapi \
+  --cpu-percent=70 \
+  --min=2 \
+  --max=20
+
+kubectl get hpa mywebapi --watch</code></pre>
+                <h4>Enable Cluster Autoscaler:</h4>
+                <pre><code>az aks update \
+  --resource-group rg-containers \
+  --name myakscluster \
+  --enable-cluster-autoscaler \
+  --min-count 1 \
+  --max-count 10</code></pre>
+                <div class="highlight">
+                    <p><strong>HPA:</strong> Scales pods based on CPU/memory/custom metrics<br>
+                    <strong>Cluster Autoscaler:</strong> Scales nodes based on pending pods</p>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Scaling Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/concepts-scale" target="_blank">Scaling in AKS</a>
+                <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/" target="_blank">HPA Documentation</a>
+            </div>
+        </div>
+
+        <!-- Slide 17: Helm Package Manager -->
+        <div class="slide">
+            <div class="slide-number">17 / 20</div>
+            <div class="content-area">
+                <h2>Helm Package Manager</h2>
+                <h3>Simplify Kubernetes Deployments</h3>
+                <div class="highlight">
+                    <h4>Why Helm?</h4>
+                    <ul>
+                        <li>Package Kubernetes applications as charts</li>
+                        <li>Templating for different environments</li>
+                        <li>Version control for releases</li>
+                        <li>Easy rollback and upgrades</li>
+                        <li>Share charts via repositories</li>
+                    </ul>
+                </div>
+                <h4>Create Helm Chart:</h4>
+                <pre><code>helm create mywebapi-chart
+
+# Customize values.yaml and templates
+helm package mywebapi-chart
+
+# Install chart
+helm install mywebapi ./mywebapi-chart-0.1.0.tgz</code></pre>
+                <h4>Manage Releases:</h4>
+                <pre><code>helm list
+helm upgrade mywebapi ./mywebapi-chart-0.2.0.tgz
+helm rollback mywebapi 1</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Helm Resources</h4>
+                <a href="https://helm.sh/docs/" target="_blank">Helm Documentation</a>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/kubernetes-helm" target="_blank">Helm in AKS</a>
+            </div>
+        </div>
+
+        <!-- Slide 18: CI/CD Overview -->
+        <div class="slide">
+            <div class="slide-number">18 / 20</div>
+            <div class="content-area">
+                <h2>4.6 CI/CD for Container Deployments</h2>
+                <h3>Automate Build and Deploy</h3>
+                <div class="highlight">
+                    <h4>CI/CD Pipeline Steps:</h4>
+                    <ul>
+                        <li><strong>1. Source:</strong> Code commit triggers pipeline</li>
+                        <li><strong>2. Build:</strong> Build Docker image</li>
+                        <li><strong>3. Push:</strong> Push to ACR</li>
+                        <li><strong>4. Deploy:</strong> Deploy to ACI/ACA/App Service/AKS</li>
+                        <li><strong>5. Test:</strong> Run integration tests</li>
+                        <li><strong>6. Monitor:</strong> Track deployment metrics</li>
+                    </ul>
+                </div>
+                <h4>Popular CI/CD Tools:</h4>
+                <ul>
+                    <li><strong>GitHub Actions:</strong> Native GitHub integration</li>
+                    <li><strong>Azure DevOps:</strong> Complete DevOps platform</li>
+                    <li><strong>GitLab CI/CD:</strong> Built-in GitLab pipelines</li>
+                    <li><strong>Jenkins:</strong> Self-hosted automation server</li>
+                </ul>
+            </div>
+            <div class="links">
+                <h4>🔗 CI/CD Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/ecosystems/containers/acr-template" target="_blank">Azure Pipelines for Containers</a>
+                <a href="https://docs.github.com/en/actions/publishing-packages/publishing-docker-images" target="_blank">GitHub Actions for Docker</a>
+                <a href="4.6-cicd-pipelines.md">📝 Lab 4.6: CI/CD Pipelines</a>
+            </div>
+        </div>
+
+        <!-- Slide 19: GitHub Actions -->
+        <div class="slide">
+            <div class="slide-number">19 / 20</div>
+            <div class="content-area">
+                <h2>GitHub Actions for Containers</h2>
+                <h3>Build, Push, and Deploy</h3>
+                <h4>Workflow Example:</h4>
+                <pre><code>name: Deploy to AKS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Build and push to ACR
+      run: |
+        az acr build \
+          --registry myregistry \
+          --image mywebapi:${{ github.sha }} \
+          --file Dockerfile .
+    
+    - name: Deploy to AKS
+      run: |
+        az aks get-credentials -g rg-containers -n myakscluster
+        kubectl set image deployment/mywebapi \
+          mywebapi=myregistry.azurecr.io/mywebapi:${{ github.sha }}</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Automation Resources</h4>
+                <a href="https://docs.github.com/en/actions" target="_blank">GitHub Actions Docs</a>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/kubernetes-action" target="_blank">AKS GitHub Action</a>
+            </div>
+        </div>
+
+        <!-- Slide 20: Summary -->
+        <div class="slide">
+            <div class="slide-number">20 / 20</div>
+            <div class="content-area">
+                <h2>Module 4 Summary</h2>
+                <h3>What We've Learned</h3>
+                <div class="highlight">
+                    <h4>✅ Key Takeaways:</h4>
+                    <ul>
+                        <li>Understand when to use each Azure container service</li>
+                        <li>Deploy .NET containers to ACI for simple workloads</li>
+                        <li>Deploy microservices to Container Apps with autoscaling</li>
+                        <li>Use App Service for traditional web applications</li>
+                        <li>Deploy to AKS for enterprise Kubernetes workloads</li>
+                        <li>Implement CI/CD pipelines with GitHub Actions</li>
+                        <li>Configure autoscaling, networking, and monitoring</li>
+                    </ul>
+                </div>
+                <h3>📝 Hands-On Labs:</h3>
+                <ul>
+                    <li><a href="4.1-container-services-overview.md" style="color: #0066cc;">Lab 4.1: Services Overview</a></li>
+                    <li><a href="4.2-azure-container-instances.md" style="color: #0066cc;">Lab 4.2: Deploy to ACI</a></li>
+                    <li><a href="4.3-azure-container-apps.md" style="color: #0066cc;">Lab 4.3: Deploy to Container Apps</a></li>
+                    <li><a href="4.4-app-service-containers.md" style="color: #0066cc;">Lab 4.4: Deploy to App Service</a></li>
+                    <li><a href="4.5-azure-kubernetes-service.md" style="color: #0066cc;">Lab 4.5: Deploy to AKS</a></li>
+                    <li><a href="4.6-cicd-pipelines.md" style="color: #0066cc;">Lab 4.6: CI/CD Pipelines</a></li>
+                </ul>
+                <p style="font-size: 1.5em; margin-top: 30px; color: #0066cc;"><strong>Congratulations on completing the training!</strong></p>
+            </div>
+            <div class="links">
+                <h4>📚 Continue Learning</h4>
+                <a href="../curriculum.md">📖 Full Curriculum</a>
+                <a href="https://learn.microsoft.com/en-us/azure/architecture/guide/technology-choices/compute-decision-tree" target="_blank">Azure Compute Guide</a>
+                <a href="https://learn.microsoft.com/en-us/training/paths/deploy-applications-with-azure-devops/" target="_blank">Microsoft Learn: DevOps</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="navigate(-1)">◀ Previous</button>
+        <button class="nav-button" id="nextBtn" onclick="navigate(1)">Next ▶</button>
+    </div>
+
+    <script>
+        const container = document.getElementById('slideContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.slide').length;
+
+        function navigate(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            
+            container.scrollTo({
+                left: currentSlide * window.innerWidth,
+                behavior: 'smooth'
+            });
+            
+            updateButtons();
+        }
+
+        function updateButtons() {
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+        });
+
+        // Update button state on scroll
+        container.addEventListener('scroll', () => {
+            currentSlide = Math.round(container.scrollLeft / window.innerWidth);
+            updateButtons();
+        });
+
+        // Initialize
+        updateButtons();
+    </script>
+</body>
+</html>

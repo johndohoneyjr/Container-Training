@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2: .NET Containerization - Progress Software Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            background: white;
+            padding: 60px 80px 100px 80px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #0066cc;
+            font-size: 3em;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #0066cc;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #0066cc;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            margin-top: 20px;
+        }
+
+        h3 {
+            color: #0088ff;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            margin-top: 15px;
+        }
+
+        h4 {
+            color: #0066cc;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            background: #e6f2ff;
+            padding: 20px;
+            border-left: 5px solid #0066cc;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .links {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: auto;
+            border: 2px solid #0066cc;
+        }
+
+        .links h4 {
+            color: #0066cc;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .links a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 1em;
+            display: block;
+            margin: 8px 0;
+            padding: 5px 10px;
+            background: white;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            background: #0066cc;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #0088ff;
+            transform: scale(1.05);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: #0066cc;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+
+        .comparison-table th {
+            background: #0066cc;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f0f8ff;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #0066cc;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container" id="slideContainer">
+        
+        <!-- Slide 1: Title Slide -->
+        <div class="slide">
+            <div class="slide-number">1 / 18</div>
+            <div class="content-area">
+                <h1>Module 2: .NET Containerization</h1>
+                <h2>Building and Running .NET Applications in Containers</h2>
+                <div class="highlight">
+                    <h3>Learning Objectives</h3>
+                    <ul>
+                        <li>Install and configure Docker for .NET development</li>
+                        <li>Create optimized Dockerfiles for .NET applications</li>
+                        <li>Build multi-stage Docker images for .NET</li>
+                        <li>Implement security best practices in .NET containers</li>
+                        <li>Debug containerized .NET applications</li>
+                    </ul>
+                </div>
+                <p style="font-size: 1.5em; margin-top: 30px; color: #0066cc;"><strong>Progress Software Development Teams</strong></p>
+            </div>
+            <div class="links">
+                <h4>📚 Module Resources</h4>
+                <a href="your-computer-setup.md">🛠️ Computer Setup Guide</a>
+                <a href="https://docs.docker.com/get-docker/" target="_blank">🐳 Get Docker Desktop</a>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/docker/introduction" target="_blank">📖 .NET and Docker - Microsoft Docs</a>
+                <a href="https://github.com/dotnet/dotnet-docker" target="_blank">🔗 Official .NET Docker Samples</a>
+            </div>
+        </div>
+
+        <!-- Slide 2: Environment Setup Overview -->
+        <div class="slide">
+            <div class="slide-number">2 / 18</div>
+            <div class="content-area">
+                <h2>2.1 Environment Setup</h2>
+                <h3>Tools We'll Install</h3>
+                <div class="highlight">
+                    <h4>Essential Development Tools:</h4>
+                    <ul>
+                        <li><strong>Docker Desktop:</strong> Container runtime for Windows and macOS
+                            <ul>
+                                <li>Windows: WSL2 integration required</li>
+                                <li>macOS: Native support for Intel and Apple Silicon</li>
+                            </ul>
+                        </li>
+                        <li><strong>.NET SDK 10.0:</strong> Latest Long-Term Support release</li>
+                        <li><strong>ORAS CLI:</strong> OCI Registry As Storage for artifact management</li>
+                        <li><strong>Azure CLI:</strong> For Azure Container Registry integration (Module 3)</li>
+                        <li><strong>Visual Studio Code:</strong> Recommended editor with Docker extensions</li>
+                    </ul>
+                </div>
+                <p><strong>📋 See the "your-computer-setup.md" file for detailed installation instructions!</strong></p>
+            </div>
+            <div class="links">
+                <h4>🔗 Installation Resources</h4>
+                <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Docker Desktop Download</a>
+                <a href="https://dotnet.microsoft.com/download" target="_blank">.NET 10.0 SDK Download</a>
+                <a href="https://oras.land/docs/installation" target="_blank">ORAS CLI Installation</a>
+                <a href="https://learn.microsoft.com/en-us/cli/azure/install-azure-cli" target="_blank">Azure CLI Installation</a>
+                <a href="2.1-environment-setup.md">📝 Lab: Environment Setup</a>
+            </div>
+        </div>
+
+        <!-- Slide 3: Docker Desktop for Windows -->
+        <div class="slide">
+            <div class="slide-number">3 / 18</div>
+            <div class="content-area">
+                <h2>Docker Desktop for Windows</h2>
+                <h3>WSL2 Integration</h3>
+                <div class="highlight">
+                    <h4>Prerequisites:</h4>
+                    <ul>
+                        <li>Windows 10/11 Pro, Enterprise, or Education (64-bit)</li>
+                        <li>Build 19044 or higher</li>
+                        <li>Hardware virtualization enabled in BIOS</li>
+                        <li>Minimum 4GB RAM (8GB+ recommended)</li>
+                    </ul>
+                </div>
+                <h4>Quick Setup Commands:</h4>
+                <pre><code># Enable WSL2 (PowerShell as Administrator)
+wsl --install
+wsl --set-default-version 2
+
+# Verify installation
+wsl --list --verbose
+docker --version
+docker run hello-world</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Windows Resources</h4>
+                <a href="https://docs.docker.com/desktop/install/windows-install/" target="_blank">Docker Desktop for Windows</a>
+                <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank">WSL2 Installation Guide</a>
+                <a href="https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers" target="_blank">Docker on WSL2</a>
+            </div>
+        </div>
+
+        <!-- Slide 4: Docker Desktop for macOS -->
+        <div class="slide">
+            <div class="slide-number">4 / 18</div>
+            <div class="content-area">
+                <h2>Docker Desktop for macOS</h2>
+                <h3>Intel vs Apple Silicon</h3>
+                <div class="highlight">
+                    <h4>Important Considerations:</h4>
+                    <ul>
+                        <li><strong>Apple Silicon (M1/M2/M3):</strong> Native ARM64 support
+                            <ul>
+                                <li>Download ARM64 version of Docker Desktop</li>
+                                <li>Rosetta 2 for x86 compatibility if needed</li>
+                            </ul>
+                        </li>
+                        <li><strong>Intel Macs:</strong> Download x64 version</li>
+                        <li>macOS 11 (Big Sur) or newer required</li>
+                        <li>Minimum 4GB RAM (8GB+ recommended)</li>
+                    </ul>
+                </div>
+                <h4>Verification Commands:</h4>
+                <pre><code># Check Docker version
+docker --version
+
+# Test Docker installation
+docker run hello-world
+
+# Check system info
+docker info</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 macOS Resources</h4>
+                <a href="https://docs.docker.com/desktop/install/mac-install/" target="_blank">Docker Desktop for Mac</a>
+                <a href="https://docs.docker.com/desktop/mac/apple-silicon/" target="_blank">Docker on Apple Silicon</a>
+                <a href="https://support.apple.com/en-us/HT211861" target="_blank">Rosetta 2 Installation</a>
+            </div>
+        </div>
+
+        <!-- Slide 5: Understanding .NET Container Images -->
+        <div class="slide">
+            <div class="slide-number">5 / 18</div>
+            <div class="content-area">
+                <h2>2.2 Understanding .NET Container Images</h2>
+                <h3>Microsoft Container Registry (MCR)</h3>
+                <p>Microsoft provides official .NET images at <code>mcr.microsoft.com/dotnet</code></p>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Image Type</th>
+                        <th>Purpose</th>
+                        <th>Size</th>
+                        <th>Use Case</th>
+                    </tr>
+                    <tr>
+                        <td><strong>dotnet/sdk</strong></td>
+                        <td>Build & Development</td>
+                        <td>~700MB</td>
+                        <td>Build stage in multi-stage Dockerfile</td>
+                    </tr>
+                    <tr>
+                        <td><strong>dotnet/aspnet</strong></td>
+                        <td>ASP.NET Core runtime</td>
+                        <td>~210MB</td>
+                        <td>Web apps, APIs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>dotnet/runtime</strong></td>
+                        <td>.NET runtime only</td>
+                        <td>~190MB</td>
+                        <td>Console apps, workers</td>
+                    </tr>
+                    <tr>
+                        <td><strong>dotnet/runtime-deps</strong></td>
+                        <td>Runtime dependencies</td>
+                        <td>~110MB</td>
+                        <td>Self-contained apps, AOT</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="links">
+                <h4>🔗 Image Resources</h4>
+                <a href="https://hub.docker.com/_/microsoft-dotnet" target="_blank">.NET Docker Hub</a>
+                <a href="https://mcr.microsoft.com/product/dotnet/sdk/about" target="_blank">MCR .NET SDK Images</a>
+                <a href="https://github.com/dotnet/dotnet-docker/blob/main/documentation/supported-tags.md" target="_blank">Supported Tags</a>
+                <a href="2.2-dotnet-images.md">📝 Lab: Exploring .NET Images</a>
+            </div>
+        </div>
+
+        <!-- Slide 6: Alpine vs Debian Images -->
+        <div class="slide">
+            <div class="slide-number">6 / 18</div>
+            <div class="content-area">
+                <h2>Alpine vs. Debian Images</h2>
+                <h3>Choosing the Right Base Image</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Alpine</th>
+                        <th>Debian (Bookworm)</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Size</strong></td>
+                        <td>Smaller (~115MB runtime)</td>
+                        <td>Larger (~210MB runtime)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C Library</strong></td>
+                        <td>musl libc</td>
+                        <td>glibc</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compatibility</strong></td>
+                        <td>May have issues with native deps</td>
+                        <td>Better compatibility</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security</strong></td>
+                        <td>Smaller attack surface</td>
+                        <td>Larger but well-maintained</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best For</strong></td>
+                        <td>Simple .NET apps, size matters</td>
+                        <td>Complex deps, production</td>
+                    </tr>
+                </table>
+                <div class="highlight">
+                    <p><strong>Recommendation:</strong> Start with Debian for compatibility, switch to Alpine if size is critical and tested.</p>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Learn More</h4>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/docker/container-images#image-variants" target="_blank">Microsoft: Image Variants</a>
+                <a href="https://alpinelinux.org/about/" target="_blank">Alpine Linux</a>
+                <a href="https://www.debian.org/" target="_blank">Debian Project</a>
+            </div>
+        </div>
+
+        <!-- Slide 7: Docker Hardened Images -->
+        <div class="slide">
+            <div class="slide-number">7 / 18</div>
+            <div class="content-area">
+                <h2>Docker Hardened Images</h2>
+                <h3>Enhanced Security for Production</h3>
+                <div class="highlight">
+                    <h4>What are Docker Hardened Images?</h4>
+                    <p>Hardened images from <code>dhia.io</code> provide enhanced security:</p>
+                    <ul>
+                        <li><strong>Pre-hardened base images:</strong> Security configurations applied</li>
+                        <li><strong>Non-root by default:</strong> Runs as unprivileged user</li>
+                        <li><strong>Minimal attack surface:</strong> Unnecessary packages removed</li>
+                        <li><strong>Regular security updates:</strong> Actively maintained</li>
+                        <li><strong>Compliance ready:</strong> Meets security standards</li>
+                    </ul>
+                </div>
+                <h4>Example Usage:</h4>
+                <pre><code># Instead of:
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+
+# Use hardened:
+FROM dhia.io/dotnet/aspnet:10.0-alpine</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Security Resources</h4>
+                <a href="https://dhia.io/" target="_blank">Docker Hardened Images</a>
+                <a href="https://docs.docker.com/develop/security-best-practices/" target="_blank">Docker Security Best Practices</a>
+                <a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html" target="_blank">OWASP Docker Security</a>
+            </div>
+        </div>
+
+        <!-- Slide 8: Dockerfile Anatomy -->
+        <div class="slide">
+            <div class="slide-number">8 / 18</div>
+            <div class="content-area">
+                <h2>2.3 Creating Dockerfiles for .NET</h2>
+                <h3>Dockerfile Instructions</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Instruction</th>
+                        <th>Purpose</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td><code>FROM</code></td>
+                        <td>Base image</td>
+                        <td><code>FROM mcr.microsoft.com/dotnet/sdk:10.0</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>WORKDIR</code></td>
+                        <td>Set working directory</td>
+                        <td><code>WORKDIR /app</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>COPY</code></td>
+                        <td>Copy files</td>
+                        <td><code>COPY *.csproj ./</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>RUN</code></td>
+                        <td>Execute command</td>
+                        <td><code>RUN dotnet restore</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>EXPOSE</code></td>
+                        <td>Document ports</td>
+                        <td><code>EXPOSE 8080</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ENTRYPOINT</code></td>
+                        <td>Container executable</td>
+                        <td><code>ENTRYPOINT ["dotnet", "App.dll"]</code></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="links">
+                <h4>🔗 Dockerfile References</h4>
+                <a href="https://docs.docker.com/engine/reference/builder/" target="_blank">Dockerfile Reference</a>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/docker/build-container" target="_blank">Build .NET Containers</a>
+                <a href="2.3-creating-dockerfiles.md">📝 Lab: Creating Dockerfiles</a>
+            </div>
+        </div>
+
+        <!-- Slide 9: Multi-Stage Builds -->
+        <div class="slide">
+            <div class="slide-number">9 / 18</div>
+            <div class="content-area">
+                <h2>Multi-Stage Dockerfiles</h2>
+                <h3>Optimize Image Size</h3>
+                <div class="highlight">
+                    <h4>Why Multi-Stage?</h4>
+                    <ul>
+                        <li><strong>Smaller final image:</strong> Only runtime needed, not SDK</li>
+                        <li><strong>Better security:</strong> No build tools in production</li>
+                        <li><strong>Faster deployment:</strong> Smaller images transfer faster</li>
+                        <li><strong>Clear separation:</strong> Build vs. runtime concerns</li>
+                    </ul>
+                </div>
+                <h4>Basic Pattern:</h4>
+                <pre><code># Build stage - SDK image
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY *.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet publish -c Release -o /app
+
+# Runtime stage - Smaller runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT ["dotnet", "MyApp.dll"]</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Multi-Stage Resources</h4>
+                <a href="https://docs.docker.com/build/building/multi-stage/" target="_blank">Multi-Stage Builds</a>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows#create-the-dockerfile" target="_blank">.NET Multi-Stage Example</a>
+            </div>
+        </div>
+
+        <!-- Slide 10: Dockerfile Best Practices -->
+        <div class="slide">
+            <div class="slide-number">10 / 18</div>
+            <div class="content-area">
+                <h2>Dockerfile Best Practices</h2>
+                <h3>Optimization Techniques</h3>
+                <div class="highlight">
+                    <h4>1. Layer Caching Optimization:</h4>
+                    <pre><code># ✅ Good - Dependencies first (cached)
+COPY *.csproj .
+RUN dotnet restore
+COPY . .
+
+# ❌ Bad - Everything copied together
+COPY . .
+RUN dotnet restore</code></pre>
+                </div>
+                <div class="highlight">
+                    <h4>2. Use .dockerignore:</h4>
+                    <pre><code># .dockerignore
+bin/
+obj/
+*.user
+.vs/
+.git/</code></pre>
+                </div>
+                <div class="highlight">
+                    <h4>3. Non-root User:</h4>
+                    <pre><code>RUN adduser -u 1000 -D appuser
+USER appuser</code></pre>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Best Practices</h4>
+                <a href="https://docs.docker.com/develop/dev-best-practices/" target="_blank">Docker Development Best Practices</a>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/docker/publish-as-container" target="_blank">.NET Container Best Practices</a>
+            </div>
+        </div>
+
+        <!-- Slide 11: Building Docker Images -->
+        <div class="slide">
+            <div class="slide-number">11 / 18</div>
+            <div class="content-area">
+                <h2>2.4 Building and Running Containers</h2>
+                <h3>Docker Build Commands</h3>
+                <h4>Basic Build:</h4>
+                <pre><code># Build with tag
+docker build -t myapp:1.0 .
+
+# Build with specific Dockerfile
+docker build -f Dockerfile.prod -t myapp:1.0 .
+
+# Build with build arguments
+docker build --build-arg VERSION=1.0 -t myapp:1.0 .
+
+# Build for multiple platforms
+docker buildx build --platform linux/amd64,linux/arm64 -t myapp:1.0 .</code></pre>
+                <div class="highlight">
+                    <h4>Important Options:</h4>
+                    <ul>
+                        <li><code>-t</code>: Tag the image</li>
+                        <li><code>-f</code>: Specify Dockerfile</li>
+                        <li><code>--no-cache</code>: Build without cache</li>
+                        <li><code>--target</code>: Build specific stage</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Build Resources</h4>
+                <a href="https://docs.docker.com/engine/reference/commandline/build/" target="_blank">docker build Reference</a>
+                <a href="https://docs.docker.com/build/building/multi-platform/" target="_blank">Multi-Platform Builds</a>
+                <a href="2.4-building-running.md">📝 Lab: Building & Running</a>
+            </div>
+        </div>
+
+        <!-- Slide 12: Running Containers -->
+        <div class="slide">
+            <div class="slide-number">12 / 18</div>
+            <div class="content-area">
+                <h2>Running .NET Containers</h2>
+                <h3>Docker Run Commands</h3>
+                <h4>Common Run Options:</h4>
+                <pre><code># Run in detached mode with port mapping
+docker run -d -p 8080:8080 --name myapi myapp:1.0
+
+# Run with environment variables
+docker run -d -p 8080:8080 \
+  -e ASPNETCORE_ENVIRONMENT=Production \
+  -e ConnectionStrings__Default="Server=db;..." \
+  --name myapi myapp:1.0
+
+# Run with volume mount
+docker run -d -p 8080:8080 \
+  -v $(pwd)/data:/app/data \
+  --name myapi myapp:1.0
+
+# Run with resource limits
+docker run -d -p 8080:8080 \
+  --memory="512m" --cpus="1.0" \
+  --name myapi myapp:1.0</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Run References</h4>
+                <a href="https://docs.docker.com/engine/reference/commandline/run/" target="_blank">docker run Reference</a>
+                <a href="https://docs.docker.com/config/containers/resource_constraints/" target="_blank">Runtime Resource Constraints</a>
+            </div>
+        </div>
+
+        <!-- Slide 13: Container Management -->
+        <div class="slide">
+            <div class="slide-number">13 / 18</div>
+            <div class="content-area">
+                <h2>Container Lifecycle Management</h2>
+                <h3>Essential Commands</h3>
+                <pre><code># View running containers
+docker ps
+
+# View all containers (including stopped)
+docker ps -a
+
+# View container logs
+docker logs myapi
+docker logs -f myapi  # Follow logs
+
+# Execute command in running container
+docker exec -it myapi /bin/sh
+docker exec myapi dotnet --info
+
+# Stop container
+docker stop myapi
+
+# Start stopped container
+docker start myapi
+
+# Restart container
+docker restart myapi
+
+# Remove container
+docker rm myapi
+docker rm -f myapi  # Force remove running container</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Management Resources</h4>
+                <a href="https://docs.docker.com/engine/reference/commandline/docker/" target="_blank">Docker CLI Reference</a>
+                <a href="https://docs.docker.com/config/containers/logging/" target="_blank">Container Logging</a>
+            </div>
+        </div>
+
+        <!-- Slide 14: Docker Compose -->
+        <div class="slide">
+            <div class="slide-number">14 / 18</div>
+            <div class="content-area">
+                <h2>Docker Compose for Multi-Container Apps</h2>
+                <h3>Example: .NET API + SQL Server</h3>
+                <pre><code>version: '3.8'
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=db;Database=MyDb;User=sa;Password=Pass@123
+    depends_on:
+      - db
+  
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Pass@123
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+
+volumes:
+  sqldata:</code></pre>
+                <h4>Commands:</h4>
+                <pre><code>docker compose up -d    # Start services
+docker compose down     # Stop and remove
+docker compose logs -f  # View logs</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Compose Resources</h4>
+                <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose Overview</a>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows#create-the-docker-compose-file" target="_blank">.NET with Compose</a>
+            </div>
+        </div>
+
+        <!-- Slide 15: Security Best Practices -->
+        <div class="slide">
+            <div class="slide-number">15 / 18</div>
+            <div class="content-area">
+                <h2>2.5 .NET Container Best Practices</h2>
+                <h3>Security Hardening</h3>
+                <div class="highlight">
+                    <h4>Essential Security Practices:</h4>
+                    <ul>
+                        <li><strong>Use official images:</strong> MCR or Docker Hardened Images only</li>
+                        <li><strong>Specific version tags:</strong> Avoid <code>latest</code> in production</li>
+                        <li><strong>Non-root user:</strong> Run as unprivileged user</li>
+                        <li><strong>Multi-stage builds:</strong> Remove build tools from final image</li>
+                        <li><strong>Scan for vulnerabilities:</strong> Docker Scout, Trivy, Snyk</li>
+                        <li><strong>Health checks:</strong> Implement proper health endpoints</li>
+                        <li><strong>Secret management:</strong> Never hardcode secrets</li>
+                        <li><strong>Read-only filesystem:</strong> When possible</li>
+                        <li><strong>Drop capabilities:</strong> Minimal Linux capabilities</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Security Resources</h4>
+                <a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html" target="_blank">OWASP Docker Security</a>
+                <a href="https://docs.docker.com/scout/" target="_blank">Docker Scout</a>
+                <a href="2.5-best-practices.md">📝 Lab: Best Practices</a>
+            </div>
+        </div>
+
+        <!-- Slide 16: Vulnerability Scanning -->
+        <div class="slide">
+            <div class="slide-number">16 / 18</div>
+            <div class="content-area">
+                <h2>Scanning for Vulnerabilities</h2>
+                <h3>Security Scanning Tools</h3>
+                <h4>Docker Scout (Built-in):</h4>
+                <pre><code># Scan image for vulnerabilities
+docker scout cves myapp:1.0
+
+# View recommendations
+docker scout recommendations myapp:1.0
+
+# Compare images
+docker scout compare --to myapp:2.0 myapp:1.0</code></pre>
+                <h4>Trivy (Open Source):</h4>
+                <pre><code># Install Trivy
+brew install aquasecurity/trivy/trivy  # macOS
+winget install Aqua.Trivy              # Windows
+
+# Scan image
+trivy image myapp:1.0
+
+# Scan with severity filter
+trivy image --severity HIGH,CRITICAL myapp:1.0</code></pre>
+                <h4>Generate SBOM:</h4>
+                <pre><code>docker sbom myapp:1.0 > sbom.json</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Scanning Tools</h4>
+                <a href="https://docs.docker.com/scout/" target="_blank">Docker Scout</a>
+                <a href="https://trivy.dev/" target="_blank">Trivy Security Scanner</a>
+                <a href="https://snyk.io/product/container-vulnerability-management/" target="_blank">Snyk Container Security</a>
+            </div>
+        </div>
+
+        <!-- Slide 17: Performance Optimization -->
+        <div class="slide">
+            <div class="slide-number">17 / 18</div>
+            <div class="content-area">
+                <h2>Performance Optimization</h2>
+                <h3>Making .NET Containers Faster</h3>
+                <div class="highlight">
+                    <h4>Build-Time Optimizations:</h4>
+                    <ul>
+                        <li><strong>Layer caching:</strong> Order COPY/RUN efficiently</li>
+                        <li><strong>.dockerignore:</strong> Exclude unnecessary files</li>
+                        <li><strong>Alpine images:</strong> Smaller = faster transfer</li>
+                        <li><strong>Parallel builds:</strong> Use BuildKit</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>.NET Specific Optimizations:</h4>
+                    <ul>
+                        <li><strong>ReadyToRun (R2R):</strong> Pre-compiled for faster startup
+                            <pre><code>dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=true</code></pre>
+                        </li>
+                        <li><strong>Trimming:</strong> Remove unused assemblies
+                            <pre><code>dotnet publish -c Release -p:PublishTrimmed=true</code></pre>
+                        </li>
+                        <li><strong>AOT Compilation:</strong> Native compilation (.NET 8+)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Performance Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/deploying/ready-to-run" target="_blank">ReadyToRun Deployment</a>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trim-self-contained" target="_blank">Trim Self-Contained Apps</a>
+            </div>
+        </div>
+
+        <!-- Slide 18: Summary and Next Steps -->
+        <div class="slide">
+            <div class="slide-number">18 / 18</div>
+            <div class="content-area">
+                <h2>Module 2 Summary</h2>
+                <h3>What We've Learned</h3>
+                <div class="highlight">
+                    <h4>✅ Key Takeaways:</h4>
+                    <ul>
+                        <li>Set up Docker Desktop on Windows and macOS</li>
+                        <li>Understand .NET container image hierarchy (SDK, ASP.NET, Runtime)</li>
+                        <li>Create optimized multi-stage Dockerfiles</li>
+                        <li>Build and run .NET containers with proper configuration</li>
+                        <li>Use Docker Compose for multi-container applications</li>
+                        <li>Implement security best practices and scanning</li>
+                        <li>Optimize performance with R2R, trimming, and caching</li>
+                    </ul>
+                </div>
+                <h3>📝 Hands-On Labs:</h3>
+                <ul>
+                    <li><a href="2.1-environment-setup.md" style="color: #0066cc;">Lab 2.1: Environment Setup</a></li>
+                    <li><a href="2.2-dotnet-images.md" style="color: #0066cc;">Lab 2.2: Exploring .NET Images</a></li>
+                    <li><a href="2.3-creating-dockerfiles.md" style="color: #0066cc;">Lab 2.3: Creating Dockerfiles</a></li>
+                    <li><a href="2.4-building-running.md" style="color: #0066cc;">Lab 2.4: Building & Running</a></li>
+                    <li><a href="2.5-best-practices.md" style="color: #0066cc;">Lab 2.5: Best Practices</a></li>
+                </ul>
+                <p style="font-size: 1.5em; margin-top: 30px; color: #0066cc;"><strong>Next: Module 3 - Azure Container Registry</strong></p>
+            </div>
+            <div class="links">
+                <h4>📚 Continue Learning</h4>
+                <a href="../curriculum.md">📖 Full Curriculum</a>
+                <a href="README.md">📝 Module 2 README</a>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/docker/" target="_blank">.NET Docker Documentation</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="navigate(-1)">◀ Previous</button>
+        <button class="nav-button" id="nextBtn" onclick="navigate(1)">Next ▶</button>
+    </div>
+
+    <script>
+        const container = document.getElementById('slideContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.slide').length;
+
+        function navigate(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            
+            container.scrollTo({
+                left: currentSlide * window.innerWidth,
+                behavior: 'smooth'
+            });
+            
+            updateButtons();
+        }
+
+        function updateButtons() {
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+        });
+
+        // Update button state on scroll
+        container.addEventListener('scroll', () => {
+            currentSlide = Math.round(container.scrollLeft / window.innerWidth);
+            updateButtons();
+        });
+
+        // Initialize
+        updateButtons();
+    </script>
+</body>
+</html>

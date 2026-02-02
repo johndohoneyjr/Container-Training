@@ -1,0 +1,17 @@
+Following a recent internal alignment meeting, we’d like to set up a focused training session with Microsoft around blue/green deployment and Azure architecture best practices.
+Today, our applications run on Azure App Services, using its staging and production environments. Our CI/CD pipeline builds the solution and deploys it to a staging environment for validation. Once approved, the staging environment is swapped with production. This works well for now, but looking ahead, we see AKS (Kubernetes) as a better long-term platform—especially for scalability, resiliency, and AI-driven workloads. Our main blocker at this point is limited hands-on experience with AKS, so we’d really value Microsoft’s guidance to help us assess and plan a potential move in that direction.
+
+Here is a list of topics we are interested:
+Blue/green deployment patterns for Azure App Services
+Handling deployment scenarios involving recovery from timeouts or internet/network disruptions
+Client-by-client rollout strategies
+Deploying new versions to a subset of clients
+Gradual or selective exposure of new functionality
+Support for long-running tasks when using AKS vs Azure App Services
+Best practices for AI agents, with a focus on the Microsoft Agentic Framework
+Deployment options for the Microsoft Agentic Framework
+Azure App Services vs. AKS
+Trade-offs in terms of scalability, operability, and complexity
+Guidance on transitioning from Azure App Services to AKS
+Learning curve considerations
+Recommended adoption path and prerequisites

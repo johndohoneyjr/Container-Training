@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1: Container Fundamentals - Progress Software Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            background: white;
+            padding: 60px 80px 100px 80px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #0066cc;
+            font-size: 3em;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #0066cc;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #0066cc;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            margin-top: 20px;
+        }
+
+        h3 {
+            color: #0088ff;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            margin-top: 15px;
+        }
+
+        h4 {
+            color: #0066cc;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            background: #e6f2ff;
+            padding: 20px;
+            border-left: 5px solid #0066cc;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .links {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: auto;
+            border: 2px solid #0066cc;
+        }
+
+        .links h4 {
+            color: #0066cc;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .links a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 1em;
+            display: block;
+            margin: 8px 0;
+            padding: 5px 10px;
+            background: white;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            background: #0066cc;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #0088ff;
+            transform: scale(1.05);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: #0066cc;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+
+        .comparison-table th {
+            background: #0066cc;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f0f8ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container" id="slideContainer">
+        
+        <!-- Slide 1: Title Slide -->
+        <div class="slide">
+            <div class="slide-number">1 / 12</div>
+            <div class="content-area">
+                <h1>Module 1: Container Fundamentals</h1>
+                <h2>Migration to Container-Based Development with .NET</h2>
+                <div class="highlight">
+                    <h3>Learning Objectives</h3>
+                    <ul>
+                        <li>Understand container architecture and runtime environments</li>
+                        <li>Differentiate between containers and virtual machines</li>
+                        <li>Comprehend container ecosystem components</li>
+                        <li>Recognize container use cases and benefits for .NET applications</li>
+                    </ul>
+                </div>
+                <p style="font-size: 1.5em; margin-top: 30px; color: #0066cc;"><strong>Progress Software Development Teams</strong></p>
+            </div>
+            <div class="links">
+                <h4>📚 Essential Resources</h4>
+                <a href="https://www.docker.com/resources/what-container/" target="_blank">🐳 What is a Container? - Docker</a>
+                <a href="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/container-docker-introduction/" target="_blank">📖 Introduction to Containers and Docker - Microsoft</a>
+                <a href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/" target="_blank">☸️ Container Orchestration - Kubernetes Overview</a>
+            </div>
+        </div>
+
+        <!-- Slide 2: What are Containers? -->
+        <div class="slide">
+            <div class="slide-number">2 / 12</div>
+            <div class="content-area">
+                <h2>1.1 Introduction to Containers</h2>
+                <h3>What are Containers?</h3>
+                <p>Containers are <strong>lightweight, standalone, executable packages</strong> that include everything needed to run a piece of software, including the code, runtime, system tools, libraries, and settings.</p>
+                <div class="highlight">
+                    <h4>Key Characteristics:</h4>
+                    <ul>
+                        <li><strong>Isolation:</strong> Process and resource isolation without full virtualization</li>
+                        <li><strong>Portability:</strong> Run consistently across different environments</li>
+                        <li><strong>Efficiency:</strong> Share OS kernel, minimal overhead</li>
+                        <li><strong>Fast startup:</strong> Boot in seconds, not minutes</li>
+                        <li><strong>Immutability:</strong> Same container image produces identical results</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Learn More</h4>
+                <a href="https://www.docker.com/resources/what-container/" target="_blank">Docker: What is a Container?</a>
+                <a href="https://www.redhat.com/en/topics/containers/whats-a-linux-container" target="_blank">Red Hat: What's a Linux Container?</a>
+                <a href="https://cloud.google.com/learn/what-are-containers" target="_blank">Google Cloud: Container Basics</a>
+                <a href="https://www.ibm.com/topics/containers" target="_blank">IBM: Containers Explained</a>
+            </div>
+        </div>
+
+        <!-- Slide 3: Containers vs VMs -->
+        <div class="slide">
+            <div class="slide-number">3 / 12</div>
+            <div class="content-area">
+                <h2>Container vs. Virtual Machine Architecture</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Containers</th>
+                        <th>Virtual Machines</th>
+                    </tr>
+                    <tr>
+                        <td><strong>OS</strong></td>
+                        <td>Share host OS kernel</td>
+                        <td>Each VM has full OS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Size</strong></td>
+                        <td>MBs</td>
+                        <td>GBs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Startup</strong></td>
+                        <td>Seconds</td>
+                        <td>Minutes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Near-native</td>
+                        <td>More overhead</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isolation</strong></td>
+                        <td>Process-level</td>
+                        <td>Complete isolation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Density</strong></td>
+                        <td>Hundreds per host</td>
+                        <td>Dozens per host</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="links">
+                <h4>🔗 Deep Dive</h4>
+                <a href="https://www.atlassian.com/microservices/cloud-computing/containers-vs-vms" target="_blank">Atlassian: Containers vs VMs</a>
+                <a href="https://azure.microsoft.com/en-us/resources/cloud-computing-dictionary/what-is-a-container/" target="_blank">Microsoft Azure: Container vs VM Comparison</a>
+                <a href="https://www.netapp.com/blog/containers-vs-vms/" target="_blank">NetApp: Containers vs VMs Explained</a>
+            </div>
+        </div>
+
+        <!-- Slide 4: Container Runtime & Standards -->
+        <div class="slide">
+            <div class="slide-number">4 / 12</div>
+            <div class="content-area">
+                <h2>Container Runtime Environments & Standards</h2>
+                <div class="highlight">
+                    <h3>Container Runtimes</h3>
+                    <ul>
+                        <li><strong>containerd:</strong> Industry-standard container runtime, used by Docker and Kubernetes</li>
+                        <li><strong>CRI-O:</strong> Lightweight alternative designed for Kubernetes</li>
+                        <li><strong>Docker Engine:</strong> Comprehensive platform including runtime and tools</li>
+                    </ul>
+                </div>
+                <h3>OCI - Open Container Initiative</h3>
+                <p>Industry standards for container formats and runtime:</p>
+                <ul>
+                    <li><strong>Image Spec:</strong> Defines container image format</li>
+                    <li><strong>Runtime Spec:</strong> Defines container execution environment</li>
+                    <li><strong>Distribution Spec:</strong> Defines how to distribute container images</li>
+                </ul>
+                <h3>Evolution: Monoliths → Microservices</h3>
+                <p>Containers enable the shift from large monolithic applications to smaller, independently deployable microservices.</p>
+            </div>
+            <div class="links">
+                <h4>🔗 Standards & Runtimes</h4>
+                <a href="https://opencontainers.org/" target="_blank">Open Container Initiative (OCI)</a>
+                <a href="https://containerd.io/" target="_blank">containerd.io - Official Site</a>
+                <a href="https://cri-o.io/" target="_blank">CRI-O: Kubernetes Native Runtime</a>
+                <a href="https://github.com/opencontainers/runtime-spec" target="_blank">OCI Runtime Specification</a>
+            </div>
+        </div>
+
+        <!-- Slide 5: Container Ecosystem -->
+        <div class="slide">
+            <div class="slide-number">5 / 12</div>
+            <div class="content-area">
+                <h2>1.2 Container Ecosystem</h2>
+                <h3>Docker Architecture</h3>
+                <div class="highlight">
+                    <ul>
+                        <li><strong>Docker Engine:</strong> Core component that creates and runs containers</li>
+                        <li><strong>Docker CLI:</strong> Command-line interface for interacting with Docker</li>
+                        <li><strong>Docker Daemon (dockerd):</strong> Background service managing containers</li>
+                        <li><strong>Docker Desktop:</strong> GUI application for Mac/Windows</li>
+                    </ul>
+                </div>
+                <h3>Key Components</h3>
+                <ul>
+                    <li><strong>Images:</strong> Read-only templates with application code and dependencies</li>
+                    <li><strong>Layers:</strong> Images built from layered filesystems for efficiency</li>
+                    <li><strong>Containers:</strong> Running instances of images</li>
+                    <li><strong>Volumes:</strong> Persistent data storage</li>
+                    <li><strong>Networks:</strong> Communication between containers</li>
+                </ul>
+            </div>
+            <div class="links">
+                <h4>🔗 Docker Resources</h4>
+                <a href="https://docs.docker.com/get-started/overview/" target="_blank">Docker Architecture Overview</a>
+                <a href="https://docs.docker.com/engine/" target="_blank">Docker Engine Documentation</a>
+                <a href="https://docs.docker.com/get-started/" target="_blank">Docker Getting Started Guide</a>
+                <a href="https://www.docker.com/blog/intro-guide-to-dockerfile-best-practices/" target="_blank">Docker Best Practices</a>
+            </div>
+        </div>
+
+        <!-- Slide 6: Registries & Orchestration -->
+        <div class="slide">
+            <div class="slide-number">6 / 12</div>
+            <div class="content-area">
+                <h2>Container Registries & Orchestration</h2>
+                <h3>Container Registries</h3>
+                <div class="highlight">
+                    <p><strong>Public Registries:</strong></p>
+                    <ul>
+                        <li>Docker Hub - Largest public registry</li>
+                        <li>Microsoft Container Registry (MCR)</li>
+                        <li>GitHub Container Registry</li>
+                        <li>Quay.io</li>
+                    </ul>
+                    <p><strong>Private Registries:</strong></p>
+                    <ul>
+                        <li>Azure Container Registry (ACR)</li>
+                        <li>AWS Elastic Container Registry (ECR)</li>
+                        <li>Google Container Registry (GCR)</li>
+                        <li>Self-hosted registries</li>
+                    </ul>
+                </div>
+                <h3>Container Orchestration Platforms</h3>
+                <ul>
+                    <li><strong>Kubernetes:</strong> Industry-standard orchestration platform</li>
+                    <li><strong>Docker Swarm:</strong> Docker's native clustering solution</li>
+                    <li><strong>Azure Container Apps:</strong> Serverless container platform</li>
+                </ul>
+            </div>
+            <div class="links">
+                <h4>🔗 Registries & Orchestration</h4>
+                <a href="https://hub.docker.com/" target="_blank">Docker Hub</a>
+                <a href="https://kubernetes.io/docs/home/" target="_blank">Kubernetes Documentation</a>
+                <a href="https://azure.microsoft.com/en-us/products/container-registry/" target="_blank">Azure Container Registry</a>
+                <a href="https://azure.microsoft.com/en-us/products/container-apps/" target="_blank">Azure Container Apps</a>
+            </div>
+        </div>
+
+        <!-- Slide 7: Shift-Left Security -->
+        <div class="slide">
+            <div class="slide-number">7 / 12</div>
+            <div class="content-area">
+                <h2>1.3 Current Trends: Shift-Left Security</h2>
+                <h3>What is Shift-Left Security?</h3>
+                <p>Moving security practices <strong>earlier in the development lifecycle</strong> rather than treating it as a final gate.</p>
+                <div class="highlight">
+                    <h4>Key Practices:</h4>
+                    <ul>
+                        <li><strong>Early Integration:</strong> Security from the first line of code</li>
+                        <li><strong>CI/CD Security Scanning:</strong> Automated vulnerability detection in pipelines</li>
+                        <li><strong>Developer-Centric Tools:</strong> IDE plugins, pre-commit hooks</li>
+                        <li><strong>Policy-as-Code:</strong> Define security policies in version control</li>
+                        <li><strong>Continuous Monitoring:</strong> Real-time threat detection</li>
+                    </ul>
+                </div>
+                <p><strong>Benefits:</strong> Catch vulnerabilities early, reduce remediation costs, faster releases</p>
+            </div>
+            <div class="links">
+                <h4>🔗 Shift-Left Security Resources</h4>
+                <a href="https://www.devsecops.org/blog/2016/5/20/-security" target="_blank">DevSecOps: Shift Left Security Explained</a>
+                <a href="https://docs.github.com/en/get-started/learning-about-github/about-github-advanced-security" target="_blank">GitHub Advanced Security</a>
+                <a href="https://docs.docker.com/scout/" target="_blank">Docker Scout - Container Security</a>
+            </div>
+        </div>
+
+        <!-- Slide 8: Docker Hardened Images -->
+        <div class="slide">
+            <div class="slide-number">8 / 12</div>
+            <div class="content-area">
+                <h2>Docker Hardened Images (DHI)</h2>
+                <p><strong>The new standard for secure container images</strong> - Available FREE under Apache 2.0 license</p>
+                <div class="highlight">
+                    <h3>Key Features:</h3>
+                    <ul>
+                        <li><strong>Near-Zero CVEs:</strong> Minimal attack surface with continuous patching</li>
+                        <li><strong>SLSA Level 3 Provenance:</strong> Verifiable build integrity</li>
+                        <li><strong>Transparent SBOMs:</strong> Complete software bill of materials</li>
+                        <li><strong>Drop-in Adoption:</strong> Compatible with Alpine and Debian variants</li>
+                        <li><strong>Multi-distro Support:</strong> Flexibility in base image choice</li>
+                    </ul>
+                </div>
+                <h3>Enterprise Options</h3>
+                <ul>
+                    <li><strong>FIPS/STIG Compliance:</strong> Government and regulated industry requirements</li>
+                    <li><strong>7-Day CVE Patches:</strong> Critical vulnerability fixes in under a week</li>
+                    <li><strong>Extended Lifecycle Support (ELS):</strong> +5 years of security updates</li>
+                </ul>
+            </div>
+            <div class="links">
+                <h4>🔗 Docker Hardened Images</h4>
+                <a href="https://www.docker.com/products/hardened-images/" target="_blank">Docker Hardened Images Overview</a>
+                <a href="https://hub.docker.com/hardened-images/catalog" target="_blank">DHI Catalog - Browse Images</a>
+                <a href="https://docs.docker.com/dhi/" target="_blank">DHI Documentation</a>
+                <a href="https://docs.docker.com/dhi/migration/" target="_blank">Migration Guide to DHI</a>
+            </div>
+        </div>
+
+        <!-- Slide 9: Supply Chain Security -->
+        <div class="slide">
+            <div class="slide-number">9 / 12</div>
+            <div class="content-area">
+                <h2>Supply Chain Security</h2>
+                <h3>Why Supply Chain Security Matters</h3>
+                <p>Containers can introduce vulnerabilities through dependencies, base images, and build processes. <strong>Supply chain attacks</strong> target these weak points.</p>
+                <div class="highlight">
+                    <h3>Key Components:</h3>
+                    <ul>
+                        <li><strong>SBOM (Software Bill of Materials):</strong> Complete inventory of components and dependencies</li>
+                        <li><strong>Image Signing & Verification:</strong> Cryptographic proof of image origin and integrity</li>
+                        <li><strong>Vulnerability Scanning:</strong> Automated detection of known CVEs</li>
+                        <li><strong>Base Image Selection:</strong> Choose minimal, trusted, maintained images</li>
+                        <li><strong>Dependency Management:</strong> Track and update all dependencies</li>
+                    </ul>
+                </div>
+                <h3>Best Practices</h3>
+                <ul>
+                    <li>Use official images from trusted sources</li>
+                    <li>Implement content trust and image signing</li>
+                    <li>Regularly scan images for vulnerabilities</li>
+                    <li>Keep base images and dependencies updated</li>
+                </ul>
+            </div>
+            <div class="links">
+                <h4>🔗 Supply Chain Security</h4>
+                <a href="https://slsa.dev/" target="_blank">SLSA: Supply-chain Levels for Software Artifacts</a>
+                <a href="https://www.cisa.gov/sbom" target="_blank">CISA: Software Bill of Materials (SBOM)</a>
+                <a href="https://docs.sigstore.dev/" target="_blank">Sigstore: Container Signing</a>
+                <a href="https://aquasecurity.github.io/trivy/" target="_blank">Trivy: Vulnerability Scanner</a>
+            </div>
+        </div>
+
+        <!-- Slide 10: Container Security Best Practices -->
+        <div class="slide">
+            <div class="slide-number">10 / 12</div>
+            <div class="content-area">
+                <h2>1.4 Container Security Best Practices</h2>
+                <div class="highlight">
+                    <h3>🔒 Essential Security Practices</h3>
+                    <ul>
+                        <li><strong>Minimal Base Images:</strong> Use distroless or Alpine images to reduce attack surface</li>
+                        <li><strong>Multi-stage Builds:</strong> Separate build and runtime environments</li>
+                        <li><strong>Run as Non-Root:</strong> Use least-privilege principle</li>
+                        <li><strong>Secrets Management:</strong> Never hardcode credentials, use secret stores</li>
+                        <li><strong>Immutable Infrastructure:</strong> Treat containers as disposable</li>
+                    </ul>
+                </div>
+                <h3>Runtime Security</h3>
+                <ul>
+                    <li><strong>Security Scanning:</strong> Continuous vulnerability assessment</li>
+                    <li><strong>Runtime Monitoring:</strong> Detect anomalous behavior</li>
+                    <li><strong>Network Segmentation:</strong> Isolate containers with network policies</li>
+                    <li><strong>Resource Limits:</strong> Prevent resource exhaustion attacks</li>
+                    <li><strong>Regular Updates:</strong> Keep images and dependencies current</li>
+                </ul>
+            </div>
+            <div class="links">
+                <h4>🔗 Security Resources</h4>
+                <a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html" target="_blank">OWASP: Docker Security Cheat Sheet</a>
+                <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf" target="_blank">NIST: Container Security Guide (PDF)</a>
+                <a href="https://docs.docker.com/engine/security/" target="_blank">Docker Security Best Practices</a>
+                <a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/" target="_blank">Kubernetes Pod Security Standards</a>
+            </div>
+        </div>
+
+        <!-- Slide 11: Additional Resources -->
+        <div class="slide">
+            <div class="slide-number">11 / 12</div>
+            <div class="content-area">
+                <h2>Module 1 Resources</h2>
+                <div class="highlight">
+                    <h3>📚 Official Documentation</h3>
+                    <ul>
+                        <li><strong>Docker Official Documentation:</strong> Complete reference and guides</li>
+                        <li><strong>OCI Specifications:</strong> Container standards and specifications</li>
+                        <li><strong>Docker Hardened Images Catalog:</strong> Browse secure base images</li>
+                        <li><strong>NIST Container Security Guidelines:</strong> Government security standards</li>
+                    </ul>
+                </div>
+                <h3>🛠️ Tools & Platforms</h3>
+                <ul>
+                    <li>Docker Desktop - Development environment</li>
+                    <li>Docker Hub - Public registry</li>
+                    <li>Docker Scout - Security scanning</li>
+                    <li>Trivy - Open-source vulnerability scanner</li>
+                    <li>Snyk - Developer security platform</li>
+                </ul>
+                <h3>📖 Learning Paths</h3>
+                <ul>
+                    <li>Microsoft Learn: Container modules</li>
+                    <li>Docker Getting Started Tutorial</li>
+                    <li>Play with Docker - Interactive labs</li>
+                </ul>
+            </div>
+            <div class="links">
+                <h4>🔗 Essential Links</h4>
+                <a href="https://docs.docker.com/" target="_blank">Docker Documentation</a>
+                <a href="https://opencontainers.org/" target="_blank">Open Container Initiative</a>
+                <a href="https://hub.docker.com/hardened-images/catalog" target="_blank">Docker Hardened Images Catalog</a>
+                <a href="https://csrc.nist.gov/publications/detail/sp/800-190/final" target="_blank">NIST SP 800-190</a>
+                <a href="https://www.docker.com/play-with-docker/" target="_blank">Play with Docker</a>
+            </div>
+        </div>
+
+        <!-- Slide 12: Summary -->
+        <div class="slide">
+            <div class="slide-number">12 / 12</div>
+            <div class="content-area">
+                <h2>Module 1 Summary</h2>
+                <div class="highlight">
+                    <h3>✅ Key Takeaways</h3>
+                    <ul>
+                        <li>Containers provide <strong>lightweight, portable, and efficient</strong> application packaging</li>
+                        <li>Containers share the OS kernel, unlike VMs which include full operating systems</li>
+                        <li>The container ecosystem includes Docker, registries, and orchestration platforms</li>
+                        <li><strong>Shift-left security</strong> integrates security early in development</li>
+                        <li><strong>Docker Hardened Images</strong> provide near-zero CVEs and transparent security</li>
+                        <li><strong>Supply chain security</strong> is critical for container deployments</li>
+                        <li>Follow security best practices: minimal images, non-root users, secrets management</li>
+                    </ul>
+                </div>
+                <h3>🎯 Next Steps</h3>
+                <p>In <strong>Module 2</strong>, we'll dive into <strong>.NET Containerization</strong>:</p>
+                <ul>
+                    <li>Installing Docker and ORAS CLI</li>
+                    <li>Creating Dockerfiles for .NET applications</li>
+                    <li>Building and running .NET containers</li>
+                    <li>Implementing security best practices</li>
+                </ul>
+                <p style="font-size: 1.5em; color: #0066cc; margin-top: 30px;"><strong>Ready to containerize your .NET apps! 🚀</strong></p>
+            </div>
+            <div class="links">
+                <h4>🔗 Continue Learning</h4>
+                <a href="https://docs.microsoft.com/en-us/dotnet/core/docker/introduction" target="_blank">Microsoft: .NET and Docker Introduction</a>
+                <a href="https://github.com/dotnet/dotnet-docker" target="_blank">.NET Docker Samples on GitHub</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-button" id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function updateNavigation() {
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                slides[index].scrollIntoView({ behavior: 'smooth' });
+                updateNavigation();
+            }
+        }
+
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            goToSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            }
+        });
+
+        // Track scroll position
+        const container = document.getElementById('slideContainer');
+        container.addEventListener('scroll', () => {
+            const scrollPosition = container.scrollLeft;
+            const slideWidth = window.innerWidth;
+            currentSlide = Math.round(scrollPosition / slideWidth);
+            updateNavigation();
+        });
+
+        // Initialize
+        updateNavigation();
+    </script>
+</body>
+</html>

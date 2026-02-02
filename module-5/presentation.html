@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5: Monitoring, Troubleshooting, and Best Practices - Progress Software Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            background: white;
+            padding: 60px 80px 100px 80px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #0066cc;
+            font-size: 3em;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #0066cc;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #0066cc;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            margin-top: 20px;
+        }
+
+        h3 {
+            color: #0088ff;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            margin-top: 15px;
+        }
+
+        h4 {
+            color: #0066cc;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            background: #e6f2ff;
+            padding: 20px;
+            border-left: 5px solid #0066cc;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .links {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: auto;
+            border: 2px solid #0066cc;
+        }
+
+        .links h4 {
+            color: #0066cc;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .links a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 1em;
+            display: block;
+            margin: 8px 0;
+            padding: 5px 10px;
+            background: white;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            background: #0066cc;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #0088ff;
+            transform: scale(1.05);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: #0066cc;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1.05em;
+        }
+
+        .comparison-table th {
+            background: #0066cc;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f0f8ff;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #0066cc;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container" id="slideContainer">
+        
+        <!-- Slide 1: Title Slide -->
+        <div class="slide">
+            <div class="slide-number">1 / 15</div>
+            <div class="content-area">
+                <h1>Module 5: Monitoring, Troubleshooting, and Best Practices</h1>
+                <h2>Production-Ready Containerized .NET Applications</h2>
+                <div class="highlight">
+                    <h3>Learning Objectives</h3>
+                    <ul>
+                        <li>Monitor containerized .NET applications in Azure</li>
+                        <li>Troubleshoot common container issues effectively</li>
+                        <li>Implement comprehensive logging and observability</li>
+                        <li>Apply production best practices for security and reliability</li>
+                        <li>Optimize container performance and costs</li>
+                    </ul>
+                </div>
+                <p style="font-size: 1.5em; margin-top: 30px; color: #0066cc;"><strong>Progress Software Development Teams</strong></p>
+            </div>
+            <div class="links">
+                <h4>📚 Module Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/" target="_blank">📊 Azure Monitor</a>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview" target="_blank">🔍 Container Insights</a>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview" target="_blank">📈 Application Insights</a>
+                <a href="https://opentelemetry.io/" target="_blank">🔭 OpenTelemetry</a>
+            </div>
+        </div>
+
+        <!-- Slide 2: Monitoring Overview -->
+        <div class="slide">
+            <div class="slide-number">2 / 15</div>
+            <div class="content-area">
+                <h2>5.1 Monitoring and Observability</h2>
+                <h3>The Three Pillars of Observability</h3>
+                <div class="highlight">
+                    <h4>1. Metrics</h4>
+                    <ul>
+                        <li><strong>Infrastructure metrics:</strong> CPU, memory, disk, network</li>
+                        <li><strong>Application metrics:</strong> Request rate, error rate, latency</li>
+                        <li><strong>Business metrics:</strong> Transactions, user actions</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>2. Logs</h4>
+                    <ul>
+                        <li><strong>Application logs:</strong> Structured logging with .NET</li>
+                        <li><strong>Container logs:</strong> stdout/stderr from containers</li>
+                        <li><strong>Infrastructure logs:</strong> Azure platform logs</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>3. Traces</h4>
+                    <ul>
+                        <li><strong>Distributed tracing:</strong> Track requests across services</li>
+                        <li><strong>OpenTelemetry:</strong> Standard instrumentation</li>
+                        <li><strong>Correlation IDs:</strong> Connect related operations</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Observability Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/architecture/framework/devops/monitoring" target="_blank">Azure Monitoring Best Practices</a>
+                <a href="https://opentelemetry.io/docs/what-is-opentelemetry/" target="_blank">OpenTelemetry Overview</a>
+                <a href="5.1-monitoring-observability.md">📝 Lab 5.1: Monitoring Setup</a>
+            </div>
+        </div>
+
+        <!-- Slide 3: Azure Monitor -->
+        <div class="slide">
+            <div class="slide-number">3 / 15</div>
+            <div class="content-area">
+                <h2>Azure Monitor and Container Insights</h2>
+                <h3>Comprehensive Monitoring Platform</h3>
+                <div class="highlight">
+                    <h4>Azure Monitor Features:</h4>
+                    <ul>
+                        <li><strong>Container Insights:</strong> AKS and Container Apps monitoring</li>
+                        <li><strong>Log Analytics:</strong> Query logs with KQL</li>
+                        <li><strong>Metrics Explorer:</strong> Visualize time-series data</li>
+                        <li><strong>Alerts:</strong> Proactive notifications</li>
+                        <li><strong>Dashboards:</strong> Custom visualizations</li>
+                        <li><strong>Workbooks:</strong> Interactive reports</li>
+                    </ul>
+                </div>
+                <h4>Enable Container Insights for AKS:</h4>
+                <pre><code>az aks enable-addons \
+  --resource-group rg-containers \
+  --name myakscluster \
+  --addons monitoring \
+  --workspace-resource-id <workspace-id></code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Azure Monitor Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview" target="_blank">Container Insights Documentation</a>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-overview" target="_blank">Log Analytics</a>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-getting-started" target="_blank">Metrics Explorer</a>
+            </div>
+        </div>
+
+        <!-- Slide 4: Application Insights -->
+        <div class="slide">
+            <div class="slide-number">4 / 15</div>
+            <div class="content-area">
+                <h2>Application Insights for .NET</h2>
+                <h3>Application Performance Monitoring</h3>
+                <div class="highlight">
+                    <h4>Key Capabilities:</h4>
+                    <ul>
+                        <li><strong>Auto-instrumentation:</strong> Automatic telemetry collection</li>
+                        <li><strong>Request tracking:</strong> HTTP requests and dependencies</li>
+                        <li><strong>Exception tracking:</strong> Unhandled exceptions</li>
+                        <li><strong>Performance profiling:</strong> Identify bottlenecks</li>
+                        <li><strong>Live metrics:</strong> Real-time monitoring</li>
+                        <li><strong>Availability tests:</strong> Synthetic monitoring</li>
+                    </ul>
+                </div>
+                <h4>Add to .NET Application:</h4>
+                <pre><code># Install package
+dotnet add package Microsoft.ApplicationInsights.AspNetCore
+
+# Configure in Program.cs
+builder.Services.AddApplicationInsightsTelemetry();</code></pre>
+                <h4>Set Connection String:</h4>
+                <pre><code>export APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=...;..."</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Application Insights Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview" target="_blank">Application Insights Overview</a>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core" target="_blank">ASP.NET Core Integration</a>
+            </div>
+        </div>
+
+        <!-- Slide 5: Log Analytics KQL -->
+        <div class="slide">
+            <div class="slide-number">5 / 15</div>
+            <div class="content-area">
+                <h2>Log Analytics and KQL Queries</h2>
+                <h3>Kusto Query Language</h3>
+                <h4>Common Query Examples:</h4>
+                <pre><code>// View container logs
+ContainerLog
+| where TimeGenerated > ago(1h)
+| where Name contains "mywebapi"
+| project TimeGenerated, LogEntry
+
+// CPU usage by container
+Perf
+| where ObjectName == "K8SContainer"
+| where CounterName == "cpuUsageNanoCores"
+| summarize AvgCPU = avg(CounterValue) by bin(TimeGenerated, 5m), InstanceName
+
+// Failed requests
+requests
+| where success == false
+| summarize Count = count() by name, resultCode
+| order by Count desc</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 KQL Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/" target="_blank">KQL Reference</a>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries" target="_blank">Get Started with KQL</a>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-log-query" target="_blank">Container Insights Queries</a>
+            </div>
+        </div>
+
+        <!-- Slide 6: Alerts and Dashboards -->
+        <div class="slide">
+            <div class="slide-number">6 / 15</div>
+            <div class="content-area">
+                <h2>Alerts and Dashboards</h2>
+                <h3>Proactive Monitoring</h3>
+                <h4>Create Metric Alert:</h4>
+                <pre><code>az monitor metrics alert create \
+  --name high-cpu-alert \
+  --resource-group rg-containers \
+  --scopes <resource-id> \
+  --condition "avg Percentage CPU > 80" \
+  --window-size 5m \
+  --evaluation-frequency 1m \
+  --action <action-group-id></code></pre>
+                <h4>Create Log Alert:</h4>
+                <pre><code>az monitor log-analytics query \
+  --workspace <workspace-id> \
+  --analytics-query "requests | where success == false | count"</code></pre>
+                <div class="highlight">
+                    <h4>Alert Best Practices:</h4>
+                    <ul>
+                        <li>Set appropriate thresholds to avoid alert fatigue</li>
+                        <li>Use action groups for notifications (email, SMS, webhook)</li>
+                        <li>Implement escalation policies</li>
+                        <li>Document runbooks for common alerts</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Alerting Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview" target="_blank">Azure Monitor Alerts</a>
+                <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/tutorial-logs-dashboards" target="_blank">Create Dashboards</a>
+            </div>
+        </div>
+
+        <!-- Slide 7: Distributed Tracing -->
+        <div class="slide">
+            <div class="slide-number">7 / 15</div>
+            <div class="content-area">
+                <h2>Distributed Tracing with OpenTelemetry</h2>
+                <h3>Track Requests Across Services</h3>
+                <div class="highlight">
+                    <h4>Why Distributed Tracing?</h4>
+                    <ul>
+                        <li>Understand request flow in microservices</li>
+                        <li>Identify performance bottlenecks</li>
+                        <li>Track dependencies between services</li>
+                        <li>Debug complex failures</li>
+                    </ul>
+                </div>
+                <h4>Add OpenTelemetry to .NET:</h4>
+                <pre><code># Install packages
+dotnet add package OpenTelemetry.Extensions.Hosting
+dotnet add package OpenTelemetry.Instrumentation.AspNetCore
+dotnet add package OpenTelemetry.Exporter.Console
+
+# Configure in Program.cs
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracerProviderBuilder =>
+        tracerProviderBuilder
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddConsoleExporter());</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Tracing Resources</h4>
+                <a href="https://opentelemetry.io/docs/" target="_blank">OpenTelemetry Documentation</a>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing" target="_blank">.NET Distributed Tracing</a>
+            </div>
+        </div>
+
+        <!-- Slide 8: Troubleshooting Overview -->
+        <div class="slide">
+            <div class="slide-number">8 / 15</div>
+            <div class="content-area">
+                <h2>5.2 Troubleshooting Techniques</h2>
+                <h3>Common Container Issues</h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Issue Type</th>
+                        <th>Common Causes</th>
+                        <th>First Steps</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Image Pull Errors</strong></td>
+                        <td>Invalid credentials, network issues</td>
+                        <td>Check ACR auth, verify image exists</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CrashLoopBackOff</strong></td>
+                        <td>Application error, misconfiguration</td>
+                        <td>Check logs, verify environment vars</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OOMKilled</strong></td>
+                        <td>Memory limits too low</td>
+                        <td>Increase memory, check for leaks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Network Issues</strong></td>
+                        <td>DNS, firewall, service mesh config</td>
+                        <td>Test connectivity, check NSG rules</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Resource constraints, inefficient code</td>
+                        <td>Profile app, check resource usage</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="links">
+                <h4>🔗 Troubleshooting Resources</h4>
+                <a href="https://kubernetes.io/docs/tasks/debug/" target="_blank">Kubernetes Troubleshooting</a>
+                <a href="https://learn.microsoft.com/en-us/troubleshoot/azure/azure-kubernetes/welcome-azure-kubernetes" target="_blank">AKS Troubleshooting</a>
+                <a href="5.2-troubleshooting-techniques.md">📝 Lab 5.2: Troubleshooting</a>
+            </div>
+        </div>
+
+        <!-- Slide 9: Debugging Locally -->
+        <div class="slide">
+            <div class="slide-number">9 / 15</div>
+            <div class="content-area">
+                <h2>Local Container Debugging</h2>
+                <h3>Debug Before Deploying</h3>
+                <h4>View Container Logs:</h4>
+                <pre><code># View logs from running container
+docker logs <container-id>
+
+# Follow logs in real-time
+docker logs -f <container-id>
+
+# View last 100 lines
+docker logs --tail 100 <container-id></code></pre>
+                <h4>Execute Commands in Container:</h4>
+                <pre><code># Get shell access
+docker exec -it <container-id> /bin/bash
+
+# Run specific command
+docker exec <container-id> dotnet --info
+
+# Check processes
+docker exec <container-id> ps aux</code></pre>
+                <h4>Inspect Container:</h4>
+                <pre><code># View container details
+docker inspect <container-id>
+
+# Check networking
+docker inspect --format='{{.NetworkSettings.IPAddress}}' <container-id></code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Debugging Resources</h4>
+                <a href="https://docs.docker.com/engine/reference/commandline/logs/" target="_blank">docker logs Reference</a>
+                <a href="https://docs.docker.com/engine/reference/commandline/exec/" target="_blank">docker exec Reference</a>
+            </div>
+        </div>
+
+        <!-- Slide 10: Remote Debugging -->
+        <div class="slide">
+            <div class="slide-number">10 / 15</div>
+            <div class="content-area">
+                <h2>Remote Debugging in Azure</h2>
+                <h3>Troubleshoot Production Issues</h3>
+                <h4>ACI Debugging:</h4>
+                <pre><code># View logs
+az container logs \
+  --resource-group rg-containers \
+  --name myapi
+
+# Execute command
+az container exec \
+  --resource-group rg-containers \
+  --name myapi \
+  --exec-command "/bin/bash"</code></pre>
+                <h4>AKS Debugging with kubectl:</h4>
+                <pre><code># View pod logs
+kubectl logs <pod-name> -n <namespace>
+
+# Get shell in pod
+kubectl exec -it <pod-name> -- /bin/bash
+
+# Describe pod for events
+kubectl describe pod <pod-name>
+
+# View pod resource usage
+kubectl top pod <pod-name></code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Remote Debugging Resources</h4>
+                <a href="https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/" target="_blank">Debug Running Pods</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-troubleshooting" target="_blank">ACI Troubleshooting</a>
+            </div>
+        </div>
+
+        <!-- Slide 11: Performance Optimization -->
+        <div class="slide">
+            <div class="slide-number">11 / 15</div>
+            <div class="content-area">
+                <h2>Performance Optimization</h2>
+                <h3>Improve Application Performance</h3>
+                <div class="highlight">
+                    <h4>Container-Level Optimizations:</h4>
+                    <ul>
+                        <li><strong>Right-size resources:</strong> Set appropriate CPU/memory limits</li>
+                        <li><strong>Use Alpine images:</strong> Smaller image = faster pulls</li>
+                        <li><strong>Multi-stage builds:</strong> Reduce final image size</li>
+                        <li><strong>Layer caching:</strong> Optimize Dockerfile for build speed</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>.NET Optimizations:</h4>
+                    <ul>
+                        <li><strong>ReadyToRun (R2R):</strong> Pre-compile for faster startup</li>
+                        <li><strong>Trimming:</strong> Remove unused assemblies</li>
+                        <li><strong>Connection pooling:</strong> Reuse database connections</li>
+                        <li><strong>Async/await:</strong> Non-blocking I/O operations</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Performance Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/deploying/ready-to-run" target="_blank">ReadyToRun Deployment</a>
+                <a href="https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trim-self-contained" target="_blank">Trim Self-Contained Apps</a>
+            </div>
+        </div>
+
+        <!-- Slide 12: Production Best Practices -->
+        <div class="slide">
+            <div class="slide-number">12 / 15</div>
+            <div class="content-area">
+                <h2>5.3 Production Best Practices</h2>
+                <h3>Build Production-Ready Systems</h3>
+                <div class="highlight">
+                    <h4>High Availability:</h4>
+                    <ul>
+                        <li><strong>Multi-region deployment:</strong> Distribute across Azure regions</li>
+                        <li><strong>Health checks:</strong> Liveness and readiness probes</li>
+                        <li><strong>Autoscaling:</strong> Handle traffic spikes</li>
+                        <li><strong>Load balancing:</strong> Distribute traffic evenly</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>Disaster Recovery:</h4>
+                    <ul>
+                        <li><strong>Backup strategies:</strong> Regular backups of data and config</li>
+                        <li><strong>Geo-replication:</strong> ACR Premium for image redundancy</li>
+                        <li><strong>Runbooks:</strong> Document recovery procedures</li>
+                        <li><strong>Testing:</strong> Regular DR drills</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Best Practices Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/architecture/framework/" target="_blank">Azure Well-Architected Framework</a>
+                <a href="https://learn.microsoft.com/en-us/azure/architecture/framework/resiliency/overview" target="_blank">Reliability Patterns</a>
+                <a href="5.3-production-best-practices.md">📝 Lab 5.3: Production Best Practices</a>
+            </div>
+        </div>
+
+        <!-- Slide 13: Secrets Management -->
+        <div class="slide">
+            <div class="slide-number">13 / 15</div>
+            <div class="content-area">
+                <h2>Secrets Management with Azure Key Vault</h2>
+                <h3>Secure Credential Storage</h3>
+                <h4>Create Key Vault:</h4>
+                <pre><code>az keyvault create \
+  --name mykeyvault \
+  --resource-group rg-containers \
+  --location eastus</code></pre>
+                <h4>Store Secret:</h4>
+                <pre><code>az keyvault secret set \
+  --vault-name mykeyvault \
+  --name ConnectionString \
+  --value "Server=..."</code></pre>
+                <h4>Use in Container Apps:</h4>
+                <pre><code>az containerapp create \
+  --name myapi \
+  --resource-group rg-containers \
+  --environment myenv \
+  --image myregistry.azurecr.io/myapi:1.0 \
+  --secrets connectionstring=keyvaultref:<secret-uri> \
+  --env-vars ConnectionStrings__Default=secretref:connectionstring</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Secrets Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/key-vault/" target="_blank">Azure Key Vault</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-apps/manage-secrets" target="_blank">Container Apps Secrets</a>
+                <a href="https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver" target="_blank">AKS Secrets Store CSI</a>
+            </div>
+        </div>
+
+        <!-- Slide 14: Cost Optimization -->
+        <div class="slide">
+            <div class="slide-number">14 / 15</div>
+            <div class="content-area">
+                <h2>Cost Optimization Strategies</h2>
+                <h3>Reduce Azure Spending</h3>
+                <div class="highlight">
+                    <h4>Container-Specific Optimizations:</h4>
+                    <ul>
+                        <li><strong>Scale to zero:</strong> Container Apps for idle workloads</li>
+                        <li><strong>Right-sizing:</strong> Match resources to actual usage</li>
+                        <li><strong>Spot instances:</strong> Use for non-critical AKS nodes</li>
+                        <li><strong>Reserved instances:</strong> Commit for predictable workloads</li>
+                        <li><strong>Image cleanup:</strong> Remove old images from ACR</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h4>Monitoring Costs:</h4>
+                    <ul>
+                        <li>Use Azure Cost Management for tracking</li>
+                        <li>Set up budget alerts</li>
+                        <li>Review resource utilization regularly</li>
+                        <li>Tag resources for cost allocation</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Cost Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/cost-management-billing/" target="_blank">Azure Cost Management</a>
+                <a href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank">Pricing Calculator</a>
+            </div>
+        </div>
+
+        <!-- Slide 15: Summary -->
+        <div class="slide">
+            <div class="slide-number">15 / 15</div>
+            <div class="content-area">
+                <h2>Module 5 Summary & Course Completion</h2>
+                <h3>What We've Learned</h3>
+                <div class="highlight">
+                    <h4>✅ Module 5 Key Takeaways:</h4>
+                    <ul>
+                        <li>Implement comprehensive monitoring with Azure Monitor and Application Insights</li>
+                        <li>Write KQL queries for log analysis</li>
+                        <li>Troubleshoot container issues in Azure</li>
+                        <li>Optimize application performance</li>
+                        <li>Secure secrets with Azure Key Vault</li>
+                        <li>Apply production best practices for HA and DR</li>
+                        <li>Optimize costs in container deployments</li>
+                    </ul>
+                </div>
+                <h3>📝 Module 5 Labs:</h3>
+                <ul>
+                    <li><a href="5.1-monitoring-observability.md" style="color: #0066cc;">Lab 5.1: Monitoring and Observability</a></li>
+                    <li><a href="5.2-troubleshooting-techniques.md" style="color: #0066cc;">Lab 5.2: Troubleshooting Techniques</a></li>
+                    <li><a href="5.3-production-best-practices.md" style="color: #0066cc;">Lab 5.3: Production Best Practices</a></li>
+                </ul>
+                <p style="font-size: 1.8em; margin-top: 30px; color: #0066cc;"><strong>🎉 Congratulations on Completing the Entire Training Course!</strong></p>
+                <p style="font-size: 1.2em; margin-top: 20px;">You've mastered container-based development with .NET on Azure!</p>
+            </div>
+            <div class="links">
+                <h4>📚 What's Next?</h4>
+                <a href="../curriculum.md">📖 Review Full Curriculum</a>
+                <a href="https://learn.microsoft.com/en-us/certifications/" target="_blank">🏆 Azure Certifications</a>
+                <a href="https://learn.microsoft.com/en-us/azure/architecture/" target="_blank">🏗️ Azure Architecture Center</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="navigate(-1)">◀ Previous</button>
+        <button class="nav-button" id="nextBtn" onclick="navigate(1)">Next ▶</button>
+    </div>
+
+    <script>
+        const container = document.getElementById('slideContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.slide').length;
+
+        function navigate(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            
+            container.scrollTo({
+                left: currentSlide * window.innerWidth,
+                behavior: 'smooth'
+            });
+            
+            updateButtons();
+        }
+
+        function updateButtons() {
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+        });
+
+        // Update button state on scroll
+        container.addEventListener('scroll', () => {
+            currentSlide = Math.round(container.scrollLeft / window.innerWidth);
+            updateButtons();
+        });
+
+        // Initialize
+        updateButtons();
+    </script>
+</body>
+</html>

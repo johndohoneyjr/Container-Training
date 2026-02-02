@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3: Azure Container Registry - Progress Software Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            background: white;
+            padding: 60px 80px 100px 80px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #0066cc;
+            font-size: 3em;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #0066cc;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #0066cc;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            margin-top: 20px;
+        }
+
+        h3 {
+            color: #0088ff;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            margin-top: 15px;
+        }
+
+        h4 {
+            color: #0066cc;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            background: #e6f2ff;
+            padding: 20px;
+            border-left: 5px solid #0066cc;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .links {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: auto;
+            border: 2px solid #0066cc;
+        }
+
+        .links h4 {
+            color: #0066cc;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .links a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 1em;
+            display: block;
+            margin: 8px 0;
+            padding: 5px 10px;
+            background: white;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            background: #0066cc;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #0088ff;
+            transform: scale(1.05);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: #0066cc;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+
+        .comparison-table th {
+            background: #0066cc;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f0f8ff;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #0066cc;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container" id="slideContainer">
+        
+        <!-- Slide 1: Title Slide -->
+        <div class="slide">
+            <div class="slide-number">1 / 16</div>
+            <div class="content-area">
+                <h1>Module 3: Azure Container Registry (ACR)</h1>
+                <h2>Private Container Registry on Azure</h2>
+                <div class="highlight">
+                    <h3>Learning Objectives</h3>
+                    <ul>
+                        <li>Provision and configure Azure Container Registry</li>
+                        <li>Push and pull container images to/from ACR</li>
+                        <li>Implement ACR security and access controls</li>
+                        <li>Use ORAS CLI for OCI artifact management</li>
+                        <li>Automate ACR tasks and image maintenance</li>
+                    </ul>
+                </div>
+                <p style="font-size: 1.5em; margin-top: 30px; color: #0066cc;"><strong>Progress Software Development Teams</strong></p>
+            </div>
+            <div class="links">
+                <h4>📚 Module Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/" target="_blank">📖 ACR Documentation</a>
+                <a href="https://azure.microsoft.com/en-us/products/container-registry/" target="_blank">🏢 ACR Product Page</a>
+                <a href="https://learn.microsoft.com/en-us/cli/azure/" target="_blank">⚡ Azure CLI Reference</a>
+                <a href="https://oras.land/" target="_blank">📦 ORAS Documentation</a>
+            </div>
+        </div>
+
+        <!-- Slide 2: Environment Setup -->
+        <div class="slide">
+            <div class="slide-number">2 / 16</div>
+            <div class="content-area">
+                <h2>3.1 Environment Setup for Azure</h2>
+                <h3>Prerequisites</h3>
+                <div class="highlight">
+                    <h4>Required Tools:</h4>
+                    <ul>
+                        <li><strong>Azure CLI:</strong> Command-line tool for Azure management
+                            <ul>
+                                <li>Windows: MSI installer or winget</li>
+                                <li>macOS: Homebrew installation</li>
+                                <li>Linux: Package manager installation</li>
+                            </ul>
+                        </li>
+                        <li><strong>ORAS CLI:</strong> OCI Registry As Storage (already installed)</li>
+                        <li><strong>Azure Subscription:</strong> Active Azure account</li>
+                        <li><strong>Docker Desktop:</strong> Container runtime (Module 2)</li>
+                    </ul>
+                </div>
+                <h4>Quick Setup Commands:</h4>
+                <pre><code># Verify installation
+az --version
+
+# Login to Azure
+az login
+
+# List subscriptions
+az account list --output table
+
+# Set active subscription
+az account set --subscription "Your Subscription Name"</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Setup Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/cli/azure/install-azure-cli" target="_blank">Azure CLI Installation</a>
+                <a href="https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli" target="_blank">Getting Started with Azure CLI</a>
+                <a href="https://oras.land/docs/installation" target="_blank">ORAS Installation</a>
+                <a href="3.1-azure-cli-setup.md">📝 Lab 3.1: Azure CLI Setup</a>
+            </div>
+        </div>
+
+        <!-- Slide 3: ACR Overview -->
+        <div class="slide">
+            <div class="slide-number">3 / 16</div>
+            <div class="content-area">
+                <h2>3.2 Azure Container Registry Fundamentals</h2>
+                <h3>What is ACR?</h3>
+                <p>Azure Container Registry is a <strong>private Docker registry service</strong> that stores and manages container images and related OCI artifacts.</p>
+                <div class="highlight">
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li><strong>Private registry:</strong> Secure storage for your container images</li>
+                        <li><strong>Geo-replication:</strong> Replicate images across Azure regions (Premium)</li>
+                        <li><strong>ACR Tasks:</strong> Automated image builds and patching</li>
+                        <li><strong>Webhooks:</strong> Trigger actions on push/delete events</li>
+                        <li><strong>Security scanning:</strong> Vulnerability assessment with Defender</li>
+                        <li><strong>OCI artifacts:</strong> Store Helm charts, SBOMs, configs</li>
+                        <li><strong>Integration:</strong> Native support for AKS, Container Apps, App Service</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Learn More</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-intro" target="_blank">ACR Introduction</a>
+                <a href="https://azure.microsoft.com/en-us/pricing/details/container-registry/" target="_blank">ACR Pricing</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-best-practices" target="_blank">ACR Best Practices</a>
+            </div>
+        </div>
+
+        <!-- Slide 4: ACR Service Tiers -->
+        <div class="slide">
+            <div class="slide-number">4 / 16</div>
+            <div class="content-area">
+                <h2>ACR Service Tiers</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Feature</th>
+                        <th>Basic</th>
+                        <th>Standard</th>
+                        <th>Premium</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage</strong></td>
+                        <td>10 GB included</td>
+                        <td>100 GB included</td>
+                        <td>500 GB included</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Throughput</strong></td>
+                        <td>Lower</td>
+                        <td>Higher</td>
+                        <td>Highest</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Geo-replication</strong></td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Content trust</strong></td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Private endpoints</strong></td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Zone redundancy</strong></td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best For</strong></td>
+                        <td>Dev/Test</td>
+                        <td>Production</td>
+                        <td>Enterprise Production</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="links">
+                <h4>🔗 Tier Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-skus" target="_blank">ACR Service Tiers</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-geo-replication" target="_blank">Geo-Replication</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-content-trust" target="_blank">Content Trust</a>
+            </div>
+        </div>
+
+        <!-- Slide 5: Provisioning ACR -->
+        <div class="slide">
+            <div class="slide-number">5 / 16</div>
+            <div class="content-area">
+                <h2>Provisioning ACR with Azure CLI</h2>
+                <h3>Create Your First Registry</h3>
+                <pre><code># Create resource group
+az group create \
+  --name rg-containers \
+  --location eastus
+
+# Create ACR (Premium tier)
+az acr create \
+  --resource-group rg-containers \
+  --name myuniqueregistry \
+  --sku Premium \
+  --location eastus
+
+# Enable admin credentials (dev/test only)
+az acr update \
+  --name myuniqueregistry \
+  --admin-enabled true
+
+# Get credentials
+az acr credential show \
+  --name myuniqueregistry \
+  --output table
+
+# Login to ACR
+az acr login --name myuniqueregistry</code></pre>
+                <div class="highlight">
+                    <p><strong>Note:</strong> Registry name must be globally unique and contain only alphanumeric characters.</p>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 Provisioning Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/cli/azure/acr" target="_blank">az acr Reference</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli" target="_blank">Quickstart: Create ACR</a>
+                <a href="3.2-provisioning-acr.md">📝 Lab 3.2: Provisioning ACR</a>
+            </div>
+        </div>
+
+        <!-- Slide 6: Working with Images -->
+        <div class="slide">
+            <div class="slide-number">6 / 16</div>
+            <div class="content-area">
+                <h2>3.3 Working with Container Images</h2>
+                <h3>Push Images to ACR</h3>
+                <h4>Step 1: Tag Your Image</h4>
+                <pre><code># Tag for ACR
+docker tag mywebapi:1.0 myuniqueregistry.azurecr.io/mywebapi:1.0
+docker tag mywebapi:1.0 myuniqueregistry.azurecr.io/mywebapi:latest</code></pre>
+                <h4>Step 2: Push to ACR</h4>
+                <pre><code># Login first
+az acr login --name myuniqueregistry
+
+# Push images
+docker push myuniqueregistry.azurecr.io/mywebapi:1.0
+docker push myuniqueregistry.azurecr.io/mywebapi:latest</code></pre>
+                <h4>Step 3: Verify in ACR</h4>
+                <pre><code># List repositories
+az acr repository list --name myuniqueregistry --output table
+
+# Show tags for repository
+az acr repository show-tags \
+  --name myuniqueregistry \
+  --repository mywebapi \
+  --output table</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Image Management</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-docker-cli" target="_blank">Push/Pull Images</a>
+                <a href="https://learn.microsoft.com/en-us/cli/azure/acr/repository" target="_blank">Repository Commands</a>
+                <a href="3.3-working-with-images.md">📝 Lab 3.3: Working with Images</a>
+            </div>
+        </div>
+
+        <!-- Slide 7: Pulling Images -->
+        <div class="slide">
+            <div class="slide-number">7 / 16</div>
+            <div class="content-area">
+                <h2>Pulling Images from ACR</h2>
+                <h3>Use Images in Your Deployments</h3>
+                <h4>Pull with Docker:</h4>
+                <pre><code># Pull specific tag
+docker pull myuniqueregistry.azurecr.io/mywebapi:1.0
+
+# Pull latest
+docker pull myuniqueregistry.azurecr.io/mywebapi:latest
+
+# Run container from ACR
+docker run -d -p 8080:8080 \
+  --name myapi \
+  myuniqueregistry.azurecr.io/mywebapi:1.0</code></pre>
+                <h4>Get Image Details:</h4>
+                <pre><code># Show repository details
+az acr repository show \
+  --name myuniqueregistry \
+  --repository mywebapi
+
+# Show manifest
+az acr repository show-manifests \
+  --name myuniqueregistry \
+  --repository mywebapi \
+  --detail</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Pull Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication" target="_blank">ACR Authentication</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-image-formats" target="_blank">Supported Image Formats</a>
+            </div>
+        </div>
+
+        <!-- Slide 8: Image Lifecycle -->
+        <div class="slide">
+            <div class="slide-number">8 / 16</div>
+            <div class="content-area">
+                <h2>Managing Image Lifecycle</h2>
+                <h3>Delete, Purge, and Maintain</h3>
+                <h4>Delete Specific Tag:</h4>
+                <pre><code># Delete tag
+az acr repository delete \
+  --name myuniqueregistry \
+  --image mywebapi:old-version \
+  --yes</code></pre>
+                <h4>Purge Old Images (Premium):</h4>
+                <pre><code># Purge images older than 30 days
+az acr run \
+  --registry myuniqueregistry \
+  --cmd "acr purge --filter 'mywebapi:.*' --ago 30d --untagged" \
+  /dev/null</code></pre>
+                <h4>Retention Policy:</h4>
+                <pre><code># Set retention policy (Premium)
+az acr config retention update \
+  --registry myuniqueregistry \
+  --status enabled \
+  --days 7 \
+  --type UntaggedManifests</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Lifecycle Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-retention-policy" target="_blank">Retention Policies</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-auto-purge" target="_blank">Auto-Purge Images</a>
+            </div>
+        </div>
+
+        <!-- Slide 9: ORAS Overview -->
+        <div class="slide">
+            <div class="slide-number">9 / 16</div>
+            <div class="content-area">
+                <h2>3.4 ORAS CLI for OCI Artifacts</h2>
+                <h3>Beyond Container Images</h3>
+                <div class="highlight">
+                    <h4>What are OCI Artifacts?</h4>
+                    <p>OCI (Open Container Initiative) artifacts extend the registry standard to store <strong>any type of content</strong>, not just container images.</p>
+                </div>
+                <h4>Common Use Cases:</h4>
+                <ul>
+                    <li><strong>Helm Charts:</strong> Kubernetes application packages</li>
+                    <li><strong>Configuration Files:</strong> Application configs, policies</li>
+                    <li><strong>Terraform Modules:</strong> Infrastructure as Code</li>
+                    <li><strong>ML Models:</strong> Machine learning models and datasets</li>
+                    <li><strong>SBOMs:</strong> Software Bill of Materials</li>
+                    <li><strong>Signatures:</strong> Image signatures and attestations</li>
+                </ul>
+                <div class="highlight">
+                    <p><strong>ORAS vs Docker:</strong> ORAS is designed specifically for OCI artifacts, while Docker CLI focuses on container images.</p>
+                </div>
+            </div>
+            <div class="links">
+                <h4>🔗 ORAS Resources</h4>
+                <a href="https://oras.land/" target="_blank">ORAS Project</a>
+                <a href="https://opencontainers.org/" target="_blank">Open Container Initiative</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-oci-artifacts" target="_blank">OCI Artifacts in ACR</a>
+                <a href="3.4-oras-artifacts.md">📝 Lab 3.4: ORAS Artifacts</a>
+            </div>
+        </div>
+
+        <!-- Slide 10: Pushing Artifacts -->
+        <div class="slide">
+            <div class="slide-number">10 / 16</div>
+            <div class="content-area">
+                <h2>Pushing Artifacts with ORAS</h2>
+                <h3>Store Configuration Files</h3>
+                <h4>Setup:</h4>
+                <pre><code># Login to ACR
+az acr login --name myuniqueregistry
+export REGISTRY=myuniqueregistry.azurecr.io</code></pre>
+                <h4>Push Single File:</h4>
+                <pre><code># Create config file
+echo '{"setting": "value"}' > config.json
+
+# Push as artifact
+oras push $REGISTRY/configs/myapp:v1 \
+  --artifact-type application/vnd.mycompany.config.v1+json \
+  config.json:application/json</code></pre>
+                <h4>Push Multiple Files:</h4>
+                <pre><code># Push deployment package
+oras push $REGISTRY/artifacts/deployment:v1 \
+  --artifact-type application/vnd.mycompany.deployment.v1+tar \
+  ./deployment.yaml:application/yaml \
+  ./values.yaml:application/yaml \
+  ./README.md:text/markdown</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Artifact Resources</h4>
+                <a href="https://oras.land/docs/how_to_guides/pushing_and_pulling" target="_blank">ORAS Push/Pull Guide</a>
+                <a href="https://github.com/oras-project/oras/blob/main/docs/proposals/artifact-manifest.md" target="_blank">Artifact Manifest Spec</a>
+            </div>
+        </div>
+
+        <!-- Slide 11: Helm Charts in ACR -->
+        <div class="slide">
+            <div class="slide-number">11 / 16</div>
+            <div class="content-area">
+                <h2>Storing Helm Charts in ACR</h2>
+                <h3>Kubernetes Application Packages</h3>
+                <h4>Push Helm Chart:</h4>
+                <pre><code># Package chart
+helm package ./mychart
+
+# Login to ACR
+az acr login --name myuniqueregistry
+
+# Push chart as OCI artifact
+helm push mychart-1.0.0.tgz oci://myuniqueregistry.azurecr.io/helm</code></pre>
+                <h4>Pull and Install:</h4>
+                <pre><code># Pull chart
+helm pull oci://myuniqueregistry.azurecr.io/helm/mychart --version 1.0.0
+
+# Install directly from ACR
+helm install myapp \
+  oci://myuniqueregistry.azurecr.io/helm/mychart \
+  --version 1.0.0</code></pre>
+                <h4>List Charts:</h4>
+                <pre><code># List Helm charts in ACR
+az acr repository list \
+  --name myuniqueregistry \
+  --output table | grep helm/</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Helm Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-helm-repos" target="_blank">Helm Charts in ACR</a>
+                <a href="https://helm.sh/docs/topics/registries/" target="_blank">Helm OCI Support</a>
+            </div>
+        </div>
+
+        <!-- Slide 12: SBOMs and Signatures -->
+        <div class="slide">
+            <div class="slide-number">12 / 16</div>
+            <div class="content-area">
+                <h2>Attaching SBOMs and Signatures</h2>
+                <h3>Supply Chain Security</h3>
+                <h4>Generate and Attach SBOM:</h4>
+                <pre><code># Generate SBOM
+docker sbom mywebapi:1.0 \
+  --format spdx-json \
+  --output sbom.spdx.json
+
+# Attach to image in ACR
+export REGISTRY=myuniqueregistry.azurecr.io
+oras attach $REGISTRY/mywebapi:1.0 \
+  --artifact-type application/vnd.example.sbom.v1+json \
+  sbom.spdx.json:application/json</code></pre>
+                <h4>Discover Attachments:</h4>
+                <pre><code># View all artifacts attached to image
+oras discover $REGISTRY/mywebapi:1.0
+
+# View with tree format
+oras discover $REGISTRY/mywebapi:1.0 --format tree</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Security Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-sbom" target="_blank">SBOM in ACR</a>
+                <a href="https://oras.land/docs/how_to_guides/distributing_referrers" target="_blank">ORAS Referrers</a>
+                <a href="https://spdx.dev/" target="_blank">SPDX Specification</a>
+            </div>
+        </div>
+
+        <!-- Slide 13: ACR Security -->
+        <div class="slide">
+            <div class="slide-number">13 / 16</div>
+            <div class="content-area">
+                <h2>3.5 ACR Security and Access Control</h2>
+                <h3>Authentication Methods</h3>
+                <div class="highlight">
+                    <h4>Authentication Options:</h4>
+                    <ul>
+                        <li><strong>Admin account:</strong> Simple but less secure (dev/test only)</li>
+                        <li><strong>Service principal:</strong> Application identity with RBAC</li>
+                        <li><strong>Managed identity:</strong> Azure-managed identity (recommended)</li>
+                        <li><strong>Azure AD user:</strong> Individual user authentication</li>
+                        <li><strong>Repository-scoped tokens:</strong> Fine-grained access (Premium)</li>
+                    </ul>
+                </div>
+                <h4>Create Service Principal:</h4>
+                <pre><code># Create SP with acrpull role
+az ad sp create-for-rbac \
+  --name acr-service-principal \
+  --scopes /subscriptions/{sub-id}/resourceGroups/rg-containers/providers/Microsoft.ContainerRegistry/registries/myuniqueregistry \
+  --role acrpull</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Security Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication" target="_blank">ACR Authentication</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal" target="_blank">Service Principals</a>
+                <a href="3.5-acr-security.md">📝 Lab 3.5: ACR Security</a>
+            </div>
+        </div>
+
+        <!-- Slide 14: Network Security -->
+        <div class="slide">
+            <div class="slide-number">14 / 16</div>
+            <div class="content-area">
+                <h2>Network Security</h2>
+                <h3>Private Endpoints and Firewalls</h3>
+                <h4>Disable Public Access (Premium):</h4>
+                <pre><code># Disable public network access
+az acr update \
+  --name myuniqueregistry \
+  --public-network-enabled false</code></pre>
+                <h4>Configure Firewall Rules:</h4>
+                <pre><code># Add IP address to allow list
+az acr network-rule add \
+  --name myuniqueregistry \
+  --ip-address 40.76.54.131
+
+# Add IP range
+az acr network-rule add \
+  --name myuniqueregistry \
+  --ip-address 40.76.54.0/24</code></pre>
+                <h4>Create Private Endpoint:</h4>
+                <pre><code># Create private endpoint
+az network private-endpoint create \
+  --resource-group rg-containers \
+  --name myacr-private-endpoint \
+  --vnet-name myvnet \
+  --subnet mysubnet \
+  --private-connection-resource-id $(az acr show --name myuniqueregistry --query id -o tsv) \
+  --group-id registry \
+  --connection-name myacr-connection</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Network Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-private-link" target="_blank">Private Link</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-firewall-access-rules" target="_blank">Firewall Rules</a>
+            </div>
+        </div>
+
+        <!-- Slide 15: Image Scanning -->
+        <div class="slide">
+            <div class="slide-number">15 / 16</div>
+            <div class="content-area">
+                <h2>Image Scanning and Defender</h2>
+                <h3>Vulnerability Assessment</h3>
+                <h4>Enable Microsoft Defender for Containers:</h4>
+                <pre><code># Enable Defender
+az security pricing create \
+  --name Containers \
+  --tier Standard
+
+# Get vulnerability assessment
+az security assessment list \
+  --resource-id "/subscriptions/{sub-id}/resourceGroups/rg-containers/providers/Microsoft.ContainerRegistry/registries/myuniqueregistry"</code></pre>
+                <h4>Scan with ACR Tasks:</h4>
+                <pre><code># Create scan task
+az acr task create \
+  --registry myuniqueregistry \
+  --name security-scan \
+  --context /dev/null \
+  --cmd "mcr.microsoft.com/azure-cli trivy image {{.Run.Registry}}/{{.Run.Repository}}:{{.Run.Tag}}" \
+  --schedule "0 0 * * *"</code></pre>
+            </div>
+            <div class="links">
+                <h4>🔗 Scanning Resources</h4>
+                <a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction" target="_blank">Defender for Containers</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tasks-overview" target="_blank">ACR Tasks</a>
+                <a href="https://aquasecurity.github.io/trivy/" target="_blank">Trivy Scanner</a>
+            </div>
+        </div>
+
+        <!-- Slide 16: Summary -->
+        <div class="slide">
+            <div class="slide-number">16 / 16</div>
+            <div class="content-area">
+                <h2>Module 3 Summary</h2>
+                <h3>What We've Learned</h3>
+                <div class="highlight">
+                    <h4>✅ Key Takeaways:</h4>
+                    <ul>
+                        <li>Set up Azure CLI and authenticate to Azure</li>
+                        <li>Provision ACR with different service tiers</li>
+                        <li>Push and pull container images to/from ACR</li>
+                        <li>Manage image lifecycle with retention policies</li>
+                        <li>Use ORAS CLI for OCI artifacts (Helm, configs, SBOMs)</li>
+                        <li>Implement security with service principals and managed identities</li>
+                        <li>Configure network security with private endpoints</li>
+                        <li>Scan images for vulnerabilities with Defender</li>
+                    </ul>
+                </div>
+                <h3>📝 Hands-On Labs:</h3>
+                <ul>
+                    <li><a href="3.1-azure-cli-setup.md" style="color: #0066cc;">Lab 3.1: Azure CLI Setup</a></li>
+                    <li><a href="3.2-provisioning-acr.md" style="color: #0066cc;">Lab 3.2: Provisioning ACR</a></li>
+                    <li><a href="3.3-working-with-images.md" style="color: #0066cc;">Lab 3.3: Working with Images</a></li>
+                    <li><a href="3.4-oras-artifacts.md" style="color: #0066cc;">Lab 3.4: ORAS Artifacts</a></li>
+                    <li><a href="3.5-acr-security.md" style="color: #0066cc;">Lab 3.5: ACR Security</a></li>
+                </ul>
+                <p style="font-size: 1.5em; margin-top: 30px; color: #0066cc;"><strong>Next: Module 4 - Azure Container Deployment Options</strong></p>
+            </div>
+            <div class="links">
+                <h4>📚 Continue Learning</h4>
+                <a href="../curriculum.md">📖 Full Curriculum</a>
+                <a href="https://learn.microsoft.com/en-us/azure/container-registry/" target="_blank">ACR Documentation</a>
+                <a href="https://learn.microsoft.com/en-us/training/modules/intro-to-containers/" target="_blank">Microsoft Learn: Containers</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="navigate(-1)">◀ Previous</button>
+        <button class="nav-button" id="nextBtn" onclick="navigate(1)">Next ▶</button>
+    </div>
+
+    <script>
+        const container = document.getElementById('slideContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.slide').length;
+
+        function navigate(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            
+            container.scrollTo({
+                left: currentSlide * window.innerWidth,
+                behavior: 'smooth'
+            });
+            
+            updateButtons();
+        }
+
+        function updateButtons() {
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+        });
+
+        // Update button state on scroll
+        container.addEventListener('scroll', () => {
+            currentSlide = Math.round(container.scrollLeft / window.innerWidth);
+            updateButtons();
+        });
+
+        // Initialize
+        updateButtons();
+    </script>
+</body>
+</html>
